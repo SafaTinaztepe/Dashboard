@@ -15,12 +15,13 @@ export default ({ text, username, handleTextChange }) => (
             onChange={handleTextChange}
             onKeyDown={handleTextChange}
           />
-        </div>
-
+	</div>
+	<div className="col-xs-5">
+	  <button onClick={handleTextChange} id="sendBtn" className="btn btn-success">Press Enter For Now</button>
+	</div>
         <div className="clearfix"></div>
       </div>
     </div>
-
     <h4 className="greetings">Hello, {username}</h4>
   </div>
     </div>
