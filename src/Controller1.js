@@ -31,8 +31,10 @@ export default ({ knob_sb, knob_bb, knob_switch_sb, knob_switch_bb}) => (
 	    {knob_bb}/1024
 	  </td>
 	  <td className={knob_switch_sb}>
+		 {knob_switch_sb}
 	  </td>
 	  <td className={knob_switch_bb}>
+		 {knob_switch_bb}
 	  </td>
 	</tr>
 	</tbody>
