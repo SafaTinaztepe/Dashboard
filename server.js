@@ -38,26 +38,33 @@ app.post('/message', (req, res) => {
 
 app.get('/api/echo', (req, res) => {
   console.log("echo");
-  res.send('echo');
+  res.status(200).send('echo');
 });
 
 app.post('/api/echo', (req, res) => {
   var payload = JSON.stringify(req.body);
   console.log(payload);
-  res.send(payload);
+  res.status(200).send(payload);
 });
 
 
 app.get('/api/data', (req, res) => {
   console.log(data);
-  res.send(data);
+  res.status(200).send(data);
 });
 
 app.post('/api/data', (req, res) => {
+  var id = req.body.id
   console.log(req.body);
-  var payload = JSON.stringify(req.body); 
   pusher.trigger('data', 'input', req.body.data);
-  data = req.body.data;
+  res.status(200).send(req.body);
+});
+
+app.post('/api/data/:controller', (req, res) => {
+  var ctrl = req.params.controller;
+  var payload = JSON.stringify(req.body);
+  console.log(ctrl.concat(": ").concat(payload));
+  pusher.trigger('data', ctrl, payload); // payload must be sent as a string
   res.status(200).send(payload);
 });
 

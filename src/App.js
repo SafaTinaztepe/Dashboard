@@ -3,7 +3,7 @@ import axios from 'axios';
 import Pusher from 'pusher-js';
 import ChatList from './ChatList';
 import ChatBox from './ChatBox';
-import DataBox from './DataBox';
+import Controller1 from './Controller1';
 import logo from './logo.svg';
 import './App.css';
 
@@ -16,7 +16,6 @@ class App extends Component {
       chats: []
     };
   }
-
 
 
   componentDidMount() {
@@ -38,11 +37,17 @@ class App extends Component {
     });
 
     const dataChannel = pusher.subscribe('data');
+    
     dataChannel.bind('input', data => {
-      this.setState({data:data});
+      this.setState({data: data});
     });
 
-    // bind local functions
+    dataChannel.bind('controller1', data => {
+      this.setState({knob_sb	   : data.knob_sb,
+	      	     knob_bb       : data.knob_bb,
+	             knob_switch_sb: data.knob_switch_sb,
+      		     knob_switch_bb: data.knob_switch_bb});
+    });
   } 
 
   getDataState(){
@@ -85,8 +90,17 @@ class App extends Component {
           /> 
         </section>
 
-	<section>
-	    <DataBox label={"Motor"} data={this.state.data} />
+	<section className='dataSection'>
+	    <ul>
+	      <li>
+	        <Controller1
+	    	  knob_sb={this.state.knob_sb}
+	    	  knob_bb={this.state.knob_bb}
+	    	  knob_switch_sb={this.state.knob_switch_sb}
+	          knob_switch_bb={this.state.knob_switch_bb}
+	   	/>
+	      </li>
+	    </ul>
 	</section>
       </div>
     );

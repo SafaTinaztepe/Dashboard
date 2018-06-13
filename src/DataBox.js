@@ -1,7 +1,7 @@
 import React from "react";
 import "./DataBox.css";
 
-export default ({ data }) => (
+export default ({ label, data }) => (
 <table class='widget-body'>
   <tr>
     <td class="tablecell">
@@ -13,7 +13,7 @@ export default ({ data }) => (
   <tr>
     <td class="tablecell label">
       <span>
-        Motor 
+	{label} 
       </span>
     </td>
   </tr>

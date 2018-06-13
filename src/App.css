@@ -31,3 +31,13 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+section ul {
+  padding: 10px;
+}
+
+section li {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+}
