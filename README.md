@@ -1,6 +1,6 @@
-## Pusher Chat Demo with React
+## Humphry GUI
 
-- Clone repository
-- run npm install
-- start server with `node server.js`
-- start react app with `npm start`
+### Backend:### NodeJs
+### Frontend:### ReactJs
+
+This is the repository for the Humphry Engine Dashboard prototype.
