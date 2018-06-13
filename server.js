@@ -12,7 +12,9 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-const log = new Array();
+
+var log = new Array();
+var data;
 
 const pusher = new Pusher({
   appId: '541385',
@@ -28,8 +30,7 @@ app.set('PORT', process.env.PORT || 5000);
 app.post('/message', (req, res) => {
   const payload = req.body;
   pusher.trigger('chat', 'message', payload);
-  //console.log(payload);
-
+	
   // save chatlog
   log.push(payload);
   res.send(payload);
@@ -46,10 +47,17 @@ app.post('/api/echo', (req, res) => {
   res.send(payload);
 });
 
+
+app.get('/api/data', (req, res) => {
+  console.log(data);
+  res.send(data);
+});
+
 app.post('/api/data', (req, res) => {
-  var payload = req.body; 
-  pusher.trigger('data', 'input', payload.data);
-  console.log(payload);
+  console.log(req.body);
+  var payload = JSON.stringify(req.body); 
+  pusher.trigger('data', 'input', req.body.data);
+  data = req.body.data;
   res.status(200).send(payload);
 });
 

@@ -1,13 +1,27 @@
-#dataBox {
-    width: 	300px;
-    height: 	100px;
-    padding:	50px;
-    border: 	1px solid;
-    box-sizing: border-box;
-    background: white;
-    position: 	relative;
-    margin-top: 100px;
-    top: 	50%;
-    left: 	50%;
-    transform: 	translate(-50%, -50%);
+.widget-body {
+  width:300px;
+  height:200px;
+  color:white;
+  background-color: rgb(255, 205, 72);
+  box-shadow: rgba(0,0,0,0,1) 0px 2px 5px 0px;
+}
+
+.tablecell {
+  background-color: rgb(246, 187, 66);
+  font-size: 50.6px;
+  margin-top:50px;
+}
+
+.content {
+  max-width:50px;
+  text-align:center;
+  margin:auto;
+}
+
+.label {
+  color:#e0e3e5;
+  background-color: rgba(255, 205, 72,0.1);
+  font-size: 62.7px;
+  font-family: helvetica-neue;
+
 }

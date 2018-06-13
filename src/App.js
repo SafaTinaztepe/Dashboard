@@ -13,36 +13,45 @@ class App extends Component {
     this.state = {
       text: '',
       username: '',
-      chats: [],
-      data: '' 
+      chats: []
     };
   }
 
-  componentDidMount() {
-    const username = window.prompt('Username: ', 'Anonymous');
-    this.setState({ username });
 
+
+  componentDidMount() {
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.receiveData = this.receiveData.bind(this);
+    this.getDataState = this.getDataState.bind(this);
+
+    var username = "username"; 
+    this.setState({ username:username, data:'data'});
     const pusher = new Pusher('459202bd6ee274316ace', {
       cluster: 'eu',
       encrypted: true
     });
 
+    // data pipeline channels
     const channel = pusher.subscribe('chat');
     channel.bind('message', data => {
       this.setState({ chats: [...this.state.chats, data], test: '' });
     });
 
-    this.handleTextChange = this.handleTextChange.bind(this);
-
     const dataChannel = pusher.subscribe('data');
     dataChannel.bind('input', data => {
       this.setState({data:data});
     });
-    this.receiveData = this.receiveData.bind(this);
+
+    // bind local functions
+  } 
+
+  getDataState(){
+    var d = axios.get('http://192.168.178.152:5000/api/data');
+    return d;
   }
 
   handleTextChange(e) {
-	  console.log(e);
+    console.log(e);
     if ((e.keyCode === 13 || e.type === 'click') && this.state.text !== "") {
       const payload = {
         username: this.state.username,
@@ -59,6 +68,7 @@ class App extends Component {
 	axios.post('http://192.168.178.152:5000/api/data', data);	
 	this.setState({data:data});
   }
+
   render() {
     return (
       <div className="App">
@@ -76,7 +86,7 @@ class App extends Component {
         </section>
 
 	<section>
-	    <DataBox data={this.state.data} />
+	    <DataBox label={"Motor"} data={this.state.data} />
 	</section>
       </div>
     );
