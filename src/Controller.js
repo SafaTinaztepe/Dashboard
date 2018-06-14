@@ -1,8 +1,9 @@
 import React from "react";
 import "./DataBox.css";
-import "./Controller1.css";
+import "./Controller.css";
 
-export default ({ knob_sb, knob_bb, knob_switch_sb, knob_switch_bb}) => (
+
+export default ({ knob_sb, knob_bb, knob_fw_sb, knob_fw_bb, knob_bw_sb, knob_bw_bb}) => (
 <table className='widget-body'>
   <tbody>
   <tr>
@@ -17,22 +18,32 @@ export default ({ knob_sb, knob_bb, knob_switch_sb, knob_switch_bb}) => (
 	    Knob Backboard
 	  </th>
 	  <th>
-	    Knob Switch Starboard
+	    Knob Forward Switch Starboard
 	  </th>
 	  <th>
-	    Knob Switch Backboard
+	    Knob Backward Switch Starboard
+	  </th>
+	  <th>
+	    Knob Forward Switch Backboard
+	  </th>
+	  <th>
+	    Knob Backward Switch Backboard
 	  </th>
 	</tr>
 	<tr>
 	  <td>
-	    {knob_sb}/1024
+	    {knob_sb}
 	  </td>
 	  <td>
-	    {knob_bb}/1024
+	    {knob_bb}
 	  </td>
-	  <td className={knob_switch_sb}>
+	  <td class={knob_fw_sb}>
 	  </td>
-	  <td className={knob_switch_bb}>
+	  <td class={knob_bw_sb}>
+	  </td>
+	  <td class={knob_fw_bb}>
+	  </td>
+	  <td class={knob_bw_bb}>
 	  </td>
 	</tr>
 	</tbody>

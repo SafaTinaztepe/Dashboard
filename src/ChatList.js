@@ -15,7 +15,7 @@ export default ({ chats }) => (
                   <p>
                     <strong>{chat.username}</strong>
                   </p>
-                  <p>{chat.message}</p>
+                  <p><span className="chatId">{chats.indexOf(chat)+1}</span>{chat.message}</p>
                 </div>
 
                 <div className="imageHolder">
@@ -26,6 +26,6 @@ export default ({ chats }) => (
           </div>
         </div>
       );
-    })}
+    }).reverse()}
   </ul>
 );

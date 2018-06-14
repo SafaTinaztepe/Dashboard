@@ -13,8 +13,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-var log = new Array();
-var data;
+//var log = new Array();
+//var data;
+//var chat_msg_id = 0;
 
 const pusher = new Pusher({
   appId: '541385',
@@ -30,9 +31,7 @@ app.set('PORT', process.env.PORT || 5000);
 app.post('/message', (req, res) => {
   const payload = req.body;
   pusher.trigger('chat', 'message', payload);
-	
-  // save chatlog
-  log.push(payload);
+  console.log(req.body.username.concat(": ").concat(req.body.message));
   res.send(payload);
 });
 
@@ -63,13 +62,18 @@ app.post('/api/data', (req, res) => {
 app.post('/api/data/:controller', (req, res) => {
   var ctrl = req.params.controller;
   var payload = JSON.stringify(req.body);
+
   console.log(ctrl.concat(": ").concat(payload));
   pusher.trigger('data', ctrl, payload); // payload must be sent as a string
-  res.status(200).send(payload);
-});
 
-app.get('/api/log', (req, res) => {
-  res.send(log);
+  var log_payload = {
+    username: ctrl,
+    message : payload,
+  };
+
+  //pusher.trigger('chat', 'message', log_payload);
+
+  res.status(200).send(payload);
 });
 
 // 404

@@ -1,0 +1,20 @@
+td.on {
+  background-color:green;
+  text-align:center;
+}
+
+td.off {
+  background-color:red;
+  text-align:center;
+}
+
+#progress {
+  width:100%;
+  background-color:gray;
+}
+
+#bar {
+  width:1%;
+  height:30px;
+  background-color:green;
+}
