@@ -31,7 +31,7 @@ class App extends Component {
   componentDidMount() {
     this.handleTextChange = this.handleTextChange.bind(this);
 
-    var username = "username"; 
+    var username = "username";
     this.setState({ username:username, data:'data'});
     const pusher = new Pusher('459202bd6ee274316ace', {
       cluster: 'eu',
@@ -45,42 +45,46 @@ class App extends Component {
     });
 
 
-    const dataChannel = pusher.subscribe('data'); 
+    const dataChannel = pusher.subscribe('data');
     dataChannel.bind('input', data => {
       this.setState({data: data});
     });
 
     dataChannel.bind('controller', data => {
-      this.setState({knob_sb	   : data.knob_sb,
-	      	     knob_bb       : data.knob_bb,
-	      	     knob_fw_sb    : data.knob_fw_sb,
-	      	     knob_fw_bb	   : data.knob_fw_bb,
-	             knob_bw_sb    : data.knob_bw_sb,
-	             knob_bw_bb    : data.knob_bw_bb});
+      this.setState({knob_sb	     : data.knob_sb,
+      	      	     knob_bb       : data.knob_bb,
+      	      	     knob_fw_sb    : data.knob_fw_sb,
+      	      	     knob_fw_bb	   : data.knob_fw_bb,
+      	             knob_bw_sb    : data.knob_bw_sb,
+      	             knob_bw_bb    : data.knob_bw_bb});
     });
-    
+
     dataChannel.bind('pdu', data => {
       this.setState({current_sb    : data.current_sb,
-		     current_bb	   : data.current_bb,
-		     v12_bus 	   : data.v12_bus,
-		     v12_battery   : data.v12_battery,
-		     v48_bus	   : data.v48_bus,
-		     v48_dcdc      : data.v48_dcdc});
+            		     current_bb	   : data.current_bb,
+            		     v12_bus 	     : data.v12_bus,
+            		     v12_battery   : data.v12_battery,
+            		     v48_bus	     : data.v48_bus,
+            		     v48_dcdc      : data.v48_dcdc});
     });
 
     dataChannel.bind('motorsb', data => {
       this.setState({rmp           : data.rpm,
-           	     motor_temp    : data.motor_temp,
-      		     coolant_temp  : data.coolant_temp,
-       		     elock	   : data.elock,
-      		     pump	   : data.pump});
+               	     motor_temp    : data.motor_temp,
+            		     coolant_temp  : data.coolant_temp,
+             		     elock    	   : data.elock,
+            		     pump	         : data.pump});
     });
 
     dataChannel.bind('motorbb', data => {
-      this.setState({});
+      this.setState({rmp           : data.rpm,
+               	     motor_temp    : data.motor_temp,
+            		     coolant_temp  : data.coolant_temp,
+             		     elock    	   : data.elock,
+            		     pump	         : data.pump});});
     });
 
-  } 
+  }
 
   handleTextChange(e) {
     console.log(e);
@@ -88,8 +92,8 @@ class App extends Component {
       const payload = {
         username: this.state.username,
         message: this.state.text
-      }; 
-      axios.post('http://192.168.178.152:5000/message', payload); 
+      };
+      axios.post('http://192.168.178.152:5000/message', payload);
       this.setState({ text: "" });
     } else {
       this.setState({ text: e.target.value });
@@ -128,28 +132,35 @@ class App extends Component {
 	      </li>
 	      <li>
 	       <MotorSb
-	          rpm={this.state.rpm}
-	    	  motor_temp={this.state.motor_temp}
-	    	  coolant_temp={this.state.coolant_temp}
-	    	  elock={this.state.elock == '1' ? 'on' : 'off'}
-	    	  pump={this.state.pump == '1' ? 'on' : 'off'}
+  	        rpm={this.state.rpm}
+  	    	  motor_temp={this.state.motor_temp}
+  	    	  coolant_temp={this.state.coolant_temp}
+  	    	  elock={this.state.elock == '1' ? 'on' : 'off'}
+  	    	  pump={this.state.pump == '1' ? 'on' : 'off'}
 	       />
 	      </li>
 	      <li>
-	    	<Chart />
+          <MotorBb
+            rpm={this.state.rpm}
+            motor_temp={this.state.motor_temp}
+            coolant_temp={this.state.coolant_temp}
+            elock={this.state.elock == '1' ? 'on' : 'off'}
+            pump={this.state.pump == '1' ? 'on' : 'off'}
+         />
 	      </li>
+
 	   </ul>
-	</section>	
+	</section>
 
         <section className='chat'>
           <ChatBox
             text={this.state.text}
             username={this.state.username}
             handleTextChange={this.handleTextChange}
-          /> 
+          />
           <ChatList chats={this.state.chats} />
         </section>
-        	
+
 
       </div>
     );
