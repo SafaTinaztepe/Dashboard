@@ -15,6 +15,7 @@ class MotorSb extends Component{
   }
 
   render(){
+    return(
     <table className='motor_widget-body'>
       <tbody>
       <tr>
@@ -40,10 +41,10 @@ class MotorSb extends Component{
     	</tr>
     	<tr>
     	  <td>
-    	    {rpm}
+    	    {this.state.rpm}
     	  </td>
     	  <td>
-      	  {this.state.motor_temp}
+      	    {this.state.motor_temp}
     	  </td>
     	  <td>
     	    {this.state.coolant_temp}
@@ -66,6 +67,7 @@ class MotorSb extends Component{
       </tr>
       </tbody>
     </table>
+    )
   }
 }
 

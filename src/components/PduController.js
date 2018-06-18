@@ -15,10 +15,9 @@ class PduController extends Component{
       v48_dcdc: props.v48_dcdc
     }
   }
-}
-
-
-export default ({ }) => (
+ 
+  render(){
+    return(
 <table className='pdu_widget-body'>
   <tbody>
   <tr>
@@ -79,3 +78,6 @@ export default ({ }) => (
   </tbody>
 </table>
 );
+  }
+}
+export default PduController;

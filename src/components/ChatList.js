@@ -7,13 +7,14 @@ class ChatList extends Component{
   constructor(props){
     super(props);
     this.state = {
-      chats = props.chats;
+      chats: props.chats
     }
   }
 
   render(){
+    return(
     <ul>
-      {chats.map(chat => {
+      {this.state.chats.map(chat => {
         return (
           <div>
             <div className="row show-grid">
@@ -24,7 +25,7 @@ class ChatList extends Component{
                     <p>
                       <strong>{chat.username}</strong>
                     </p>
-                    <p><span className="chatId">{chats.indexOf(chat)+1}</span>{chat.message}</p>
+                    <p><span className="chatId">{this.state.chats.indexOf(chat)+1}</span>{chat.message}</p>
                   </div>
 
                   <div className="imageHolder">
@@ -37,6 +38,7 @@ class ChatList extends Component{
         );
       }).reverse()}
     </ul>
+    )
   }
 }
 

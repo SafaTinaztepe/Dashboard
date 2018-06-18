@@ -3,9 +3,10 @@ import axios from 'axios';
 import Pusher from 'pusher-js';
 import ChatList from './components/ChatList';
 import ChatBox from './components/ChatBox';
-import Controller1 from './components/Controller';
+import Controller from './components/Controller';
 import PduController from './components/PduController';
 import MotorSb from './components/MotorSb';
+import MotorBb from './components/MotorBb';
 import Chart from './components/Chart';
 import logo from './logo.svg';
 import './App.css';
@@ -51,7 +52,7 @@ class App extends Component {
     });
 
     dataChannel.bind('controller', data => {
-      this.setState({knob_sb	     : data.knob_sb,
+      this.setState({knob_sb	   : data.knob_sb,
       	      	     knob_bb       : data.knob_bb,
       	      	     knob_fw_sb    : data.knob_fw_sb,
       	      	     knob_fw_bb	   : data.knob_fw_bb,
@@ -81,7 +82,7 @@ class App extends Component {
                	     motor_temp    : data.motor_temp,
             		     coolant_temp  : data.coolant_temp,
              		     elock    	   : data.elock,
-            		     pump	         : data.pump});});
+            		     pump	         : data.pump})
     });
 
   }
@@ -111,7 +112,7 @@ class App extends Component {
 	<section className='dataSection'>
 	    <ul>
 	      <li>
-	        <Controller1
+	        <Controller
 	    	  knob_sb={this.state.knob_sb}
 	    	  knob_bb={this.state.knob_bb}
 	    	  knob_fw_sb={this.state.knob_fw_sb == '1' ? 'on' : 'off'}

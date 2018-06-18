@@ -1,6 +1,7 @@
 import React, { Component} from "react";
 import "../stylesheets/DataBox.css";
 import "../stylesheets/Controller.css";
+import {PieChart} from 'react-easy-chart';
 
 class Controller extends Component{
 
@@ -46,18 +47,20 @@ class Controller extends Component{
         	</tr>
         	<tr>
         	  <td>
-        	    {this.state.knob_sb}
+        	    {this.props.knob_sb}
+	      	    <PieChart data={[{key:'On',value:this.props.knob_sb,color:'green'},
+			    	     {key:'Off',value:1024-this.props.knob_sb,color:'rgb(246, 187, 66)'}]}/>
         	  </td>
         	  <td>
-        	    {this.state.knob_bb}
+        	    {this.props.knob_bb}
         	  </td>
-        	  <td class={this.state.knob_fw_sb}>
+        	  <td class={this.props.knob_fw_sb}>
         	  </td>
-        	  <td class={this.state.knob_bw_sb}>
+        	  <td class={this.props.knob_bw_sb}>
         	  </td>
-        	  <td class={this.state.knob_fw_bb}>
+        	  <td class={this.props.knob_fw_bb}>
         	  </td>
-        	  <td class={this.state.knob_bw_bb}>
+        	  <td class={this.props.knob_bw_bb}>
         	  </td>
         	</tr>
         	</tbody>
@@ -76,3 +79,4 @@ class Controller extends Component{
       )
     }
 }
+export default Controller;

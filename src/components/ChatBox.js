@@ -13,6 +13,7 @@ class ChatBox extends Component{
   }
 
   render(){
+    return(
     <div>
       <div className="row">
       <div className="col-xs-12">
@@ -36,6 +37,8 @@ class ChatBox extends Component{
       <h4 className="greetings">Hello, User</h4>
       </div>
     </div>
+    )
   }
+}
 
 export default ChatBox;
