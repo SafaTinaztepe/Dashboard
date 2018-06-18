@@ -46,7 +46,6 @@ app.post('/api/echo', (req, res) => {
   res.status(200).send(payload);
 });
 
-
 app.get('/api/data', (req, res) => {
   console.log(data);
   res.status(200).send(data);
@@ -63,15 +62,16 @@ app.post('/api/data/:controller', (req, res) => {
   var ctrl = req.params.controller;
   var payload = JSON.stringify(req.body);
 
-  console.log(ctrl.concat(": ").concat(payload));
+  console.log(ctrl.concat(": ").concat(payload)); // string interpolation in js?
   pusher.trigger('data', ctrl, payload); // payload must be sent as a string
 
+  /*
   var log_payload = {
     username: ctrl,
     message : payload,
   };
-
-  //pusher.trigger('chat', 'message', log_payload);
+  pusher.trigger('chat', 'message', log_payload);
+  */
 
   res.status(200).send(payload);
 });
@@ -82,7 +82,5 @@ app.use(function(req, res, next){
   res.status(404).send(req);
 });
 
-app.listen(app.get('PORT'), () => 
+app.listen(app.get('PORT'), () =>
   console.log('Listening at ' + app.get('PORT')))
-
-

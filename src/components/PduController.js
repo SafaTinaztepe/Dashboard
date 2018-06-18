@@ -1,9 +1,24 @@
-import React from "react";
+import React, { Component } from "react";
 import "../stylesheets/DataBox.css";
 import "../stylesheets/PduController.css";
 
+class PduController extends Component{
 
-export default ({ current_sb, current_bb, v12_bus, v12_battery, v48_bus, v48_dcdc}) => (
+  constructor(props){
+    super(props);
+    this.state = {
+      current_sb: props.current_sb,
+      current_bb: props.current_bb,
+      v12_bus: props.v12_bus,
+      v12_battery: props.v12_batter,
+      v48_bus: props.v48_bus,
+      v48_dcdc: props.v48_dcdc
+    }
+  }
+}
+
+
+export default ({ }) => (
 <table className='pdu_widget-body'>
   <tbody>
   <tr>
@@ -21,7 +36,7 @@ export default ({ current_sb, current_bb, v12_bus, v12_battery, v48_bus, v48_dcd
 	    V12 Bus
 	  </th>
 	  <th>
-	    V12 Battery 
+	    V12 Battery
 	  </th>
 	  <th>
 	    V48 Bus
@@ -32,22 +47,22 @@ export default ({ current_sb, current_bb, v12_bus, v12_battery, v48_bus, v48_dcd
 	</tr>
 	<tr>
 	  <td>
-	    {current_sb}
+	    {this.state.current_sb}
 	  </td>
 	  <td>
-	    {current_bb}
-	  </td>
-	  <td> 
-	    {v12_bus}
+	    {this.state.current_bb}
 	  </td>
 	  <td>
-	    {v12_battery}
+	    {this.state.v12_bus}
 	  </td>
 	  <td>
-	    {v48_bus}
+	    {this.state.v12_battery}
 	  </td>
 	  <td>
-	    {v48_dcdc}
+	    {this.state.v48_bus}
+	  </td>
+	  <td>
+	    {this.state.v48_dcdc}
 	  </td>
 	</tr>
 	</tbody>
@@ -57,7 +72,7 @@ export default ({ current_sb, current_bb, v12_bus, v12_battery, v48_bus, v48_dcd
   <tr>
     <td className="pdu_tablecell pdu_label">
       <span>
-	PDU 
+	PDU
       </span>
     </td>
   </tr>
