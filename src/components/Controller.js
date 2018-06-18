@@ -1,7 +1,6 @@
 import React from "react";
-import "./DataBox.css";
-import "./Controller.css";
-
+import "../stylesheets/DataBox.css";
+import "../stylesheets/Controller.css";
 
 export default ({ knob_sb, knob_bb, knob_fw_sb, knob_fw_bb, knob_bw_sb, knob_bw_bb}) => (
 <table className='widget-body'>

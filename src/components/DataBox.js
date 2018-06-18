@@ -1,5 +1,5 @@
 import React from "react";
-import "./DataBox.css";
+import "../stylesheets/DataBox.css";
 
 export default ({ label, data }) => (
 <table class='widget-body'>

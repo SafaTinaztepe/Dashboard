@@ -1,6 +1,6 @@
 import React from "react";
-import "./DataBox.css";
-import "./PduController.css";
+import "../stylesheets/DataBox.css";
+import "../stylesheets/PduController.css";
 
 
 export default ({ current_sb, current_bb, v12_bus, v12_battery, v48_bus, v48_dcdc}) => (

@@ -1,6 +1,6 @@
 import React from "react";
-import "./DataBox.css";
-import "./MotorSb.css";
+import "../stylesheets/DataBox.css";
+import "../stylesheets/MotorSb.css";
 
 
 export default ({ rpm, motor_temp, coolant_temp, elock, pump}) => (

@@ -1,5 +1,8 @@
-import React from "react";
-import './ChatBox.css';
+import React, { Component } from "react";
+import '../stylesheets/ChatBox.css';
+
+class ChatBox extends Component{
+
 
 export default ({ text, username, handleTextChange }) => (
   <div>

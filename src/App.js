@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Pusher from 'pusher-js';
-import ChatList from './ChatList';
-import ChatBox from './ChatBox';
-import Controller1 from './Controller';
-import PduController from './PduController';
-import MotorSb from './MotorSb';
+import ChatList from './components/ChatList';
+import ChatBox from './components/ChatBox';
+import Controller1 from './components/Controller';
+import PduController from './components/PduController';
+import MotorSb from './components/MotorSb';
+import Chart from './components/Chart';
 import logo from './logo.svg';
 import './App.css';
 
@@ -133,6 +134,9 @@ class App extends Component {
 	    	  elock={this.state.elock == '1' ? 'on' : 'off'}
 	    	  pump={this.state.pump == '1' ? 'on' : 'off'}
 	       />
+	      </li>
+	      <li>
+	    	<Chart />
 	      </li>
 	   </ul>
 	</section>	
