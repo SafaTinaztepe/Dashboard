@@ -6,7 +6,7 @@ class MotorSb extends Component{
   constructor(props){
     super(props);
     this.state = {
-      rpm: props.rmp,
+      rpm: props.rpm,
       motor_temp: props.motor_temp,
       coolant_temp: props.coolant_temp,
       elock: props.elock,
@@ -41,17 +41,17 @@ class MotorSb extends Component{
     	</tr>
     	<tr>
     	  <td>
-    	    {this.state.rpm}
+    	    {this.props.rpm}
     	  </td>
     	  <td>
-      	    {this.state.motor_temp}
+      	    {this.props.motor_temp}
     	  </td>
     	  <td>
-    	    {this.state.coolant_temp}
+    	    {this.props.coolant_temp}
     	  </td>
-    	  <td class={this.state.elock}>
+    	  <td className={this.props.elock}>
     	  </td>
-    	  <td class={this.state.pump}>
+    	  <td className={this.props.pump}>
     	  </td>
     	</tr>
     	</tbody>

@@ -7,10 +7,10 @@ import Controller from './components/Controller';
 import PduController from './components/PduController';
 import MotorSb from './components/MotorSb';
 import MotorBb from './components/MotorBb';
-import Chart from './components/Chart';
 import logo from './logo.svg';
 import './App.css';
 
+/*eslint-disable*/
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,14 +24,33 @@ class App extends Component {
       knob_fw_bb:-1,
       knob_bw_sb:-1,
       knob_bw_bb:-1,
-      current_sb:-1
+      current_sb:-1,
+      current_bb :-1, 
+      v12_bus 	 :-1,
+      v12_battery:-1,
+      v48_bus	 :-1,
+      v48_dcdc   :-1, 
+      rpm_sb:-1,
+      motor_temp_sb:-1,  
+      coolant_temp_sb:-1,
+      elock_sb:-1,
+      pump_sb:-1,
+      rpm_bb           : -1,
+      motor_temp_bb    : -1,
+      coolant_temp_bb  : -1,
+      elock_bb         : -1,
+      pump_bb          : -1
     };
   }
 
 
   componentDidMount() {
+
     this.handleTextChange = this.handleTextChange.bind(this);
     this.drawChart = this.drawChart.bind(this);
+
+
+    // chat function
     var username = "username";
     this.setState({ username:username, data:'data'});
     
@@ -51,7 +70,6 @@ class App extends Component {
       this.setState({ chats: [...this.state.chats, data], test: ''});
     });
 
-
     const dataChannel = pusher.subscribe('data');
     dataChannel.bind('input', data => {
       this.setState({data: data});
@@ -64,40 +82,48 @@ class App extends Component {
       	      	     knob_fw_bb	   : data.knob_fw_bb,
       	             knob_bw_sb    : data.knob_bw_sb,
       	             knob_bw_bb    : data.knob_bw_bb});
-      this.drawChart('knob_sb', this.state.knob_sb);
-      this.drawChart('knob_bb', this.state.knob_bb);
+
+	    // if both switches are on, stagnate
+      //if(this.state.knob_fw_sb || !this.state.knob_bw_sb) this.setState({knob_sb: 0});
+      //if(this.state.knob_fw_bb || !this.state.knob_bw_bb) this.setState({knob_bb: 0});
+      
+      this.drawChart('knob_sb', this.state.knob_fw_sb, this.state.knob_sb);
+      this.drawChart('knob_bb', this.state.knob_fw_bb, this.state.knob_bb);
     });
 
     dataChannel.bind('pdu', data => {
       this.setState({current_sb    : data.current_sb,
-            		     current_bb	   : data.current_bb,
-            		     v12_bus 	     : data.v12_bus,
-            		     v12_battery   : data.v12_battery,
-            		     v48_bus	     : data.v48_bus,
-            		     v48_dcdc      : data.v48_dcdc});
+            	     current_bb	   : data.current_bb,
+            	     v12_bus 	   : data.v12_bus,
+            	     v12_battery   : data.v12_battery,
+            	     v48_bus	   : data.v48_bus,
+            	     v48_dcdc      : data.v48_dcdc});
     });
 
     dataChannel.bind('motorsb', data => {
-      this.setState({rmp           : data.rpm,
-               	     motor_temp    : data.motor_temp,
-            		     coolant_temp  : data.coolant_temp,
-             		     elock    	   : data.elock,
-            		     pump	         : data.pump});
+      this.setState({rpm_sb           : data.rpm,
+               	     motor_temp_sb    : data.motor_temp,
+            	     coolant_temp_sb  : data.coolant_temp,
+             	     elock_sb         : data.elock,
+            	     pump_sb	      : data.pump});
     });
 
     dataChannel.bind('motorbb', data => {
-      this.setState({rmp           : data.rpm,
-               	     motor_temp    : data.motor_temp,
-            		     coolant_temp  : data.coolant_temp,
-             		     elock    	   : data.elock,
-            		     pump	         : data.pump})
+      this.setState({rpm_bb           : data.rpm,
+               	     motor_temp_bb    : data.motor_temp,
+            	     coolant_temp_bb  : data.coolant_temp,
+             	     elock_bb         : data.elock,
+            	     pump_bb          : data.pump})
+
+	console.log(this.state.rpm_bb);
     });
 
   }
 
+  // local function for ChatBox component
   handleTextChange(e) {
-    console.log(e);
-    if ((e.keyCode === 13 || e.type === 'click') && this.state.text !== "") {
+    console.log(this.state.text);
+    if (e.keyCode === 13 || e.type === 'click') {
       const payload = {
         username: this.state.username,
         message: this.state.text
@@ -109,13 +135,14 @@ class App extends Component {
     }
   }
 
-  drawChart(component, value){
+  // local function for Controller component
+  drawChart(component, sw, value){
     var proportion = value/1024;
+    proportion *= sw == '0' ? 1 : -1
     var c = document.querySelector(`#${component}`);
     var ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
     ctx.beginPath();
-
 
     ctx.arc(100, 75, 50, 0, 2*Math.PI);
     ctx.strokeStyle = 'black';
@@ -124,8 +151,8 @@ class App extends Component {
     ctx.closePath();
 
     ctx.beginPath();
-    ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2);
-    ctx.strokeStyle = this.state[component] === '0' ? 'red' : 'green';
+    ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2, sw == '1');
+    ctx.strokeStyle = '#205116';
     ctx.lineWidth = 5;
     ctx.stroke();
 
@@ -140,14 +167,9 @@ class App extends Component {
     ctx.closePath();
   }
 
-
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Future Home of Humphry API</h1>
-        </header>
 
 	<section className='dataSection'>
 	    <ul>
@@ -159,7 +181,6 @@ class App extends Component {
 	          knob_fw_bb={this.state.knob_fw_bb == '1' ? 'on' : 'off'}
 	          knob_bw_sb={this.state.knob_bw_sb == '1' ? 'on' : 'off'}
 	          knob_bw_bb={this.state.knob_bw_bb == '1' ? 'on' : 'off'}
-	          drawChart={this.drawChart}
 	   	/>
 	      </li>
 	      <li>
@@ -173,22 +194,22 @@ class App extends Component {
 	        />
 	      </li>
 	      <li>
-	       <MotorSb
-  	        rpm={this.state.rpm}
-  	    	  motor_temp={this.state.motor_temp}
-  	    	  coolant_temp={this.state.coolant_temp}
-  	    	  elock={this.state.elock == '1' ? 'on' : 'off'}
-  	    	  pump={this.state.pump == '1' ? 'on' : 'off'}
-	       />
+	        <MotorSb
+  	         rpm={this.state.rpm_sb}
+  	     	 motor_temp={this.state.motor_temp_sb}
+  	    	 coolant_temp={this.state.coolant_temp_sb}
+  	    	 elock={this.state.elock_sb == '1' ? 'on' : 'off'}
+  	    	 pump={this.state.pump_sb == '1' ? 'on' : 'off'}
+	        />
 	      </li>
 	      <li>
-          <MotorBb
-            rpm={this.state.rpm}
-            motor_temp={this.state.motor_temp}
-            coolant_temp={this.state.coolant_temp}
-            elock={this.state.elock == '1' ? 'on' : 'off'}
-            pump={this.state.pump == '1' ? 'on' : 'off'}
-         />
+                <MotorBb
+                 rpm={this.state.rpm_bb}
+                 motor_temp={this.state.motor_temp_bb}
+                 coolant_temp={this.state.coolant_temp_bb}
+                 elock={this.state.elock_bb == '1' ? 'on' : 'off'}
+                 pump={this.state.pump_bb == '1' ? 'on' : 'off'}
+                />
 	      </li>
 
 	   </ul>

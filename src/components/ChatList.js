@@ -14,7 +14,7 @@ class ChatList extends Component{
   render(){
     return(
     <ul>
-      {this.state.chats.map(chat => {
+      {this.props.chats.map(chat => {
         return (
           <div>
             <div className="row show-grid">
@@ -25,7 +25,7 @@ class ChatList extends Component{
                     <p>
                       <strong>{chat.username}</strong>
                     </p>
-                    <p><span className="chatId">{this.state.chats.indexOf(chat)+1}</span>{chat.message}</p>
+                    <p><span className="chatId">{this.props.chats.indexOf(chat)+1}</span>{chat.message}</p>
                   </div>
 
                   <div className="imageHolder">

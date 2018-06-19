@@ -1,13 +1,23 @@
 import requests
 import random
 import time
+import threading
 
-url = "http://192.168.178.152:5000/api/data/controller"
+ctrl_url = "http://192.168.178.152:5000/api/data/controller"
+pdu_url = "http://192.168.178.152:5000/api/data/pdu"
+motorsb_url = "http://192.168.178.152:5000/api/data/motorsb"
+motorbb_url = "http://192.168.178.152:5000/api/data/motorbb"
+
 
 headers = {
     'Content-Type': "application/x-www-form-urlencoded",
     'Cache-Control': "no-cache",
 }
+
+
+def hit_ctrl():
+    pass
+
 
 for _ in range(500):
     rng1 = random.randint(0,1025)

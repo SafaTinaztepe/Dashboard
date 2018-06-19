@@ -46,22 +46,22 @@ class PduController extends Component{
 	</tr>
 	<tr>
 	  <td>
-	    {this.state.current_sb}
+	    {this.props.current_sb}
 	  </td>
 	  <td>
-	    {this.state.current_bb}
+	    {this.props.current_bb}
 	  </td>
 	  <td>
-	    {this.state.v12_bus}
+	    {this.props.v12_bus}
 	  </td>
 	  <td>
-	    {this.state.v12_battery}
+	    {this.props.v12_battery}
 	  </td>
 	  <td>
-	    {this.state.v48_bus}
+	    {this.props.v48_bus}
 	  </td>
 	  <td>
-	    {this.state.v48_dcdc}
+	    {this.props.v48_dcdc}
 	  </td>
 	</tr>
 	</tbody>
