@@ -31,9 +31,15 @@ class App extends Component {
 
   componentDidMount() {
     this.handleTextChange = this.handleTextChange.bind(this);
-
+    this.drawChart = this.drawChart.bind(this);
     var username = "username";
     this.setState({ username:username, data:'data'});
+    
+    // init charts
+    this.drawChart('knob_sb', this.state.knob_sb);
+    this.drawChart('knob_bb', this.state.knob_bb);
+	  
+
     const pusher = new Pusher('459202bd6ee274316ace', {
       cluster: 'eu',
       encrypted: true
@@ -58,6 +64,8 @@ class App extends Component {
       	      	     knob_fw_bb	   : data.knob_fw_bb,
       	             knob_bw_sb    : data.knob_bw_sb,
       	             knob_bw_bb    : data.knob_bw_bb});
+      this.drawChart('knob_sb', this.state.knob_sb);
+      this.drawChart('knob_bb', this.state.knob_bb);
     });
 
     dataChannel.bind('pdu', data => {
@@ -101,6 +109,38 @@ class App extends Component {
     }
   }
 
+  drawChart(component, value){
+    var proportion = value/1024;
+    var c = document.querySelector(`#${component}`);
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.beginPath();
+
+
+    ctx.arc(100, 75, 50, 0, 2*Math.PI);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2);
+    ctx.strokeStyle = this.state[component] === '0' ? 'red' : 'green';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.font = '30px Georgia';
+    ctx.fillStyle = 'black';
+    ctx.fillText(value, 80, 75);
+
+    ctx.font = '15px Georgia';
+    ctx.fillStyle = 'gray';
+    ctx.fillText('1024', 80, 100);
+
+    ctx.closePath();
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -119,6 +159,7 @@ class App extends Component {
 	          knob_fw_bb={this.state.knob_fw_bb == '1' ? 'on' : 'off'}
 	          knob_bw_sb={this.state.knob_bw_sb == '1' ? 'on' : 'off'}
 	          knob_bw_bb={this.state.knob_bw_bb == '1' ? 'on' : 'off'}
+	          drawChart={this.drawChart}
 	   	/>
 	      </li>
 	      <li>
