@@ -11,6 +11,13 @@ class ChatBox extends Component{
       handleTextChange: props.handleTextChange
     }
   }
+  componentDidMount(){
+    this.setState({
+      text: this.props.text,
+      username: this.props.username,
+      handleTextChange: this.props.handleTextChange
+    });
+  }
 
   render(){
     return(
@@ -21,15 +28,15 @@ class ChatBox extends Component{
           <div className="col-xs-5 col-xs-offset-3">
             <input
               type="text"
-              value={this.state.text}
+              value={this.props.text}
               placeholder="chat here..."
               className="form-control"
-              onChange={this.state.handleTextChange}
-              onKeyDown={this.state.handleTextChange}
+              onChange={this.props.handleTextChange}
+              onKeyDown={this.props.handleTextChange}
             />
   	      </div>
   	    <div className="col-s-10">
-  	      <button onClick={this.state.handleTextChange} id="sendBtn" className="btn btn-success">Send</button>
+  	      <button onClick={this.props.handleTextChange} id="sendBtn" className="btn btn-success">Send</button>
   	    </div>
         <div className="clearfix"></div>
         </div>
