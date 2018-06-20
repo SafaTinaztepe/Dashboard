@@ -34,19 +34,6 @@ class Controller extends Component{
       // fetch changes every second
     }
 
-    componentDidUpdate(prevProps){
-      if(this.props.knob_sb !== 0 && this.props.knob_sb !== prevProps.knob_sb){
-        this.setState({
-  	      knob_sb: this.props.knob_sb,
-          knob_bb: this.props.knob_bb,
-          knob_fw_sb: this.props.knob_fw_sb,
-          knob_fw_bb: this.props.knob_fw_bb,
-          knob_bw_sb: this.props.knob_bw_sb,
-          knob_bw_bb: this.props.knob_bw_bb
-        });
-      }
-    }
-
     render(){
       return (
         <table border={1} className='widget-body'>

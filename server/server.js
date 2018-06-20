@@ -98,22 +98,30 @@ app.post('/api/data', (req, res) => {
 
 app.post('/api/data/:controller', (req, res) => {
   var ctrl = req.params.controller;
-  var payload = JSON.stringify(req.body);
-
-  console.log(`${ctrl}: ${payload}`);
-  pusher.trigger('data', ctrl, payload); // payload must be sent as a string
-
   var table = getTableFromController(ctrl);
-	var sql = `INSERT INTO ${table} (${Object.keys(req.body)}) VALUES (?)`;
-
-	values = Object.keys(req.body).map(function(_){return req.body[_];});
-
+	var sql;
+	var values = [];
+	if(req.body instanceof Array){
+		req.body.map(row => {
+			var payload = JSON.stringify(row);
+			console.log(`${ctrl}: ${payload}`);
+			pusher.trigger('data', ctrl, payload);
+			sql = `INSERT INTO ${table} (${Object.keys(row)}) VALUES ?`;
+			values.push(Object.keys(row).map(function(_){return row[_]}));
+		});
+	} else {
+		var payload = JSON.stringify(req.body);
+		console.log(`${ctrl}: ${payload}`);
+		pusher.trigger('data', ctrl, payload);
+		sql = `INSERT INTO ${table} (${Object.keys(req.body)}) VALUES (?)`;
+		values = Object.keys(req.body).map(function(_){return req.body[_]});
+	}
 
   connection.query(sql, [values], function(err, result){
     if(err) console.log(err);
   });
 
-  res.status(200).send(payload);
+  res.status(200).send(req.body);
 });
 // ====================================== //
 
