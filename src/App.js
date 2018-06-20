@@ -25,13 +25,13 @@ class App extends Component {
       knob_bw_sb:-1,
       knob_bw_bb:-1,
       current_sb:-1,
-      current_bb :-1, 
+      current_bb :-1,
       v12_bus 	 :-1,
       v12_battery:-1,
       v48_bus	 :-1,
-      v48_dcdc   :-1, 
+      v48_dcdc   :-1,
       rpm_sb:-1,
-      motor_temp_sb:-1,  
+      motor_temp_sb:-1,
       coolant_temp_sb:-1,
       elock_sb:-1,
       pump_sb:-1,
@@ -48,17 +48,18 @@ class App extends Component {
 
     this.handleTextChange = this.handleTextChange.bind(this);
     this.drawChart = this.drawChart.bind(this);
+    this.handleDbChange = this.handleDbChange.bind(this);
 
 
     // chat function
     var username = "username";
     this.setState({ username:username, data:'data'});
-    
+
     // init charts
     this.drawChart('knob_sb', this.state.knob_sb);
     this.drawChart('knob_bb', this.state.knob_bb);
-	  
 
+    // will get rid of this soon
     const pusher = new Pusher('459202bd6ee274316ace', {
       cluster: 'eu',
       encrypted: true
@@ -86,7 +87,7 @@ class App extends Component {
 	    // if both switches are on, stagnate
       //if(this.state.knob_fw_sb || !this.state.knob_bw_sb) this.setState({knob_sb: 0});
       //if(this.state.knob_fw_bb || !this.state.knob_bw_bb) this.setState({knob_bb: 0});
-      
+
       this.drawChart('knob_sb', this.state.knob_fw_sb, this.state.knob_sb);
       this.drawChart('knob_bb', this.state.knob_fw_bb, this.state.knob_bb);
     });
@@ -114,11 +115,32 @@ class App extends Component {
             	     coolant_temp_bb  : data.coolant_temp,
              	     elock_bb         : data.elock,
             	     pump_bb          : data.pump})
-
-	console.log(this.state.rpm_bb);
     });
 
   }
+
+  // TODO: Compare the performance of fetch versus axios.get
+  handleDbChange(ctrl) {
+    fetch(`http://192.168.178.152:5000/api/data/${ctrl}`, {
+      method: 'GET'
+    }).then(function(response) {
+      if (response.status >= 400) {
+        throw new Error("Bad news");
+      }
+      return response.json();
+    }).then((data) => {
+        this.setState({knob_sb: data.knob_sb,
+                      knob_bb: data.knob_bb,
+                      knob_fw_sb: data.knob_fw_sb,
+                      knob_fw_bb: data.knob_fw_bb,
+                      knob_bw_sb: data.knob_bw_sb,
+                      knob_bw_bb: data.knob_bw_bb});
+
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
+
 
   // local function for ChatBox component
   handleTextChange(e) {
@@ -150,6 +172,7 @@ class App extends Component {
     ctx.stroke();
     ctx.closePath();
 
+    // draw arced arrow
     ctx.beginPath();
     ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2, sw == '1');
     ctx.strokeStyle = '#205116';
@@ -175,13 +198,15 @@ class App extends Component {
 	    <ul>
 	      <li>
 	        <Controller
-	    	  knob_sb={this.state.knob_sb}
-	    	  knob_bb={this.state.knob_bb}
-	    	  knob_fw_sb={this.state.knob_fw_sb == '1' ? 'on' : 'off'}
-	          knob_fw_bb={this.state.knob_fw_bb == '1' ? 'on' : 'off'}
-	          knob_bw_sb={this.state.knob_bw_sb == '1' ? 'on' : 'off'}
-	          knob_bw_bb={this.state.knob_bw_bb == '1' ? 'on' : 'off'}
-	   	/>
+  	    	  knob_sb   ={this.state.knob_sb}
+  	    	  knob_bb   ={this.state.knob_bb}
+  	    	  knob_fw_sb={this.state.knob_fw_sb == '1' ? 'on' : 'off'}
+            knob_fw_bb={this.state.knob_fw_bb == '1' ? 'on' : 'off'}
+            knob_bw_sb={this.state.knob_bw_sb == '1' ? 'on' : 'off'}
+            knob_bw_bb={this.state.knob_bw_bb == '1' ? 'on' : 'off'}
+            handleDbChange={this.handleDbChange.bind(this)}
+            drawChart={this.drawChart.bind(this)}
+	   	    />
 	      </li>
 	      <li>
 	        <PduController
@@ -195,21 +220,21 @@ class App extends Component {
 	      </li>
 	      <li>
 	        <MotorSb
-  	         rpm={this.state.rpm_sb}
-  	     	 motor_temp={this.state.motor_temp_sb}
-  	    	 coolant_temp={this.state.coolant_temp_sb}
-  	    	 elock={this.state.elock_sb == '1' ? 'on' : 'off'}
-  	    	 pump={this.state.pump_sb == '1' ? 'on' : 'off'}
+    	       rpm={this.state.rpm_sb}
+    	     	 motor_temp={this.state.motor_temp_sb}
+    	    	 coolant_temp={this.state.coolant_temp_sb}
+    	    	 elock={this.state.elock_sb == '1' ? 'on' : 'off'}
+    	    	 pump={this.state.pump_sb == '1' ? 'on' : 'off'}
 	        />
 	      </li>
 	      <li>
-                <MotorBb
-                 rpm={this.state.rpm_bb}
-                 motor_temp={this.state.motor_temp_bb}
-                 coolant_temp={this.state.coolant_temp_bb}
-                 elock={this.state.elock_bb == '1' ? 'on' : 'off'}
-                 pump={this.state.pump_bb == '1' ? 'on' : 'off'}
-                />
+          <MotorBb
+             rpm={this.state.rpm_bb}
+             motor_temp={this.state.motor_temp_bb}
+             coolant_temp={this.state.coolant_temp_bb}
+             elock={this.state.elock_bb == '1' ? 'on' : 'off'}
+             pump={this.state.pump_bb == '1' ? 'on' : 'off'}
+          />
 	      </li>
 
 	   </ul>

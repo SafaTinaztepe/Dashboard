@@ -32,7 +32,7 @@ CREATE TABLE MotorSb(
   rpm FLOAT,
   motor_temp FLOAT,
   coolant_temp FLOAT,
-  e_lock BOOLEAN,
+  elock BOOLEAN,
   pump BOOLEAN,
   PRIMARY KEY (id, ts)
 );
@@ -43,7 +43,7 @@ CREATE TABLE MotorBb(
   rpm FLOAT,
   motor_temp FLOAT,
   coolant_temp FLOAT,
-  e_lock BOOLEAN,
+  elock BOOLEAN,
   pump BOOLEAN,
   PRIMARY KEY (id, ts)
 );

@@ -13,20 +13,39 @@ class Controller extends Component{
         knob_fw_bb: props.knob_fw_bb,
         knob_bw_sb: props.knob_bw_sb,
         knob_bw_bb: props.knob_bw_bb
-      }
+      };
+      /*setInterval(function(){
+        props.handleDbChange('controller');
+        props.drawChart('knob_sb', props.knob_fw_sb, props.knob_sb);
+        props.drawChart('knob_bb', props.knob_fw_bb, props.knob_bb);
+      }, 1000);*/
     }
-   
+
     componentDidMount(){
       this.setState({
-	knob_sb: this.props.knob_sb,
+	      knob_sb: this.props.knob_sb,
         knob_bb: this.props.knob_bb,
         knob_fw_sb: this.props.knob_fw_sb,
         knob_fw_bb: this.props.knob_fw_bb,
         knob_bw_sb: this.props.knob_bw_sb,
         knob_bw_bb: this.props.knob_bw_bb
       });
+
+      // fetch changes every second
     }
 
+    componentDidUpdate(prevProps){
+      if(this.props.knob_sb !== 0 && this.props.knob_sb !== prevProps.knob_sb){
+        this.setState({
+  	      knob_sb: this.props.knob_sb,
+          knob_bb: this.props.knob_bb,
+          knob_fw_sb: this.props.knob_fw_sb,
+          knob_fw_bb: this.props.knob_fw_bb,
+          knob_bw_sb: this.props.knob_bw_sb,
+          knob_bw_bb: this.props.knob_bw_bb
+        });
+      }
+    }
 
     render(){
       return (
@@ -49,16 +68,16 @@ class Controller extends Component{
               </td>
 	    </tr>
 	    <tr>
-              <td className={this.state.knob_fw_sb}>
+              <td className={this.props.knob_fw_sb}>
 	        <div style={{height:25}}>Forward</div>
               </td>
-              <td className={this.state.knob_bw_sb}>
+              <td className={this.props.knob_bw_sb}>
 	        <div style={{height:25}}>Backward</div>
               </td>
-              <td className={this.state.knob_fw_bb}>
+              <td className={this.props.knob_fw_bb}>
 	        <div style={{height:25}}>Forward</div>
              </td>
-             <td className={this.state.knob_bw_bb}>	
+             <td className={this.props.knob_bw_bb}>
 	       <div style={{height:25}}>Backward</div>
              </td>
             </tr>

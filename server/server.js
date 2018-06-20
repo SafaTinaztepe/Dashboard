@@ -21,6 +21,21 @@ connection.connect();
 // ====================================== //
 
 
+// ============== Private =============== //
+function getTableFromController(ctrl){
+  var table;
+  switch(ctrl) {
+    case 'controller': table = 'Controller'; break;
+    case 'pdu'       : table = 'PduController'; break;
+    case 'motorsb'   : table = 'MotorSb'; break;
+    case 'motorbb'   : table = 'MotorBb'; break;
+  }
+  return table;
+}
+// ====================================== //
+
+
+
 // ============== Server ================ //
 const app = express();
 app.use(cors());
@@ -37,28 +52,41 @@ const pusher = new Pusher({
   encrypted: true
 });
 
-
-app.post('/message', (req, res) => {
-  const payload = req.body;
-  pusher.trigger('chat', 'message', payload);
-  console.log(req.body.username.concat(": ").concat(req.body.message));
-  res.send(payload);
-});
+// ============== GET Requests ================ //
 
 app.get('/api/echo', (req, res) => {
   console.log("echo");
   res.status(200).send('echo');
 });
 
+app.get('/api/data', (req, res) => {
+  console.log(data);
+  res.status(200).send(data);
+});
+
+app.get('/api/data/:controller', (req, res) => {
+  var table = getTableFromController(req.params.controller);
+  var sql = `SELECT * FROM ${table} ORDER BY id DESC LIMIT 1`;
+  connection.query(sql, function(err, result){
+    if(err) console.log(err);
+    res.status(200).send(result[0]);
+  });
+});
+// ====================================== //
+
+
+// ============== POST Requests ================ //
+app.post('/message', (req, res) => {
+  const payload = req.body;
+  pusher.trigger('chat', 'message', payload);
+  console.log(`${req.body.username}: ${req.body.message}`);
+  res.send(payload);
+});
+
 app.post('/api/echo', (req, res) => {
   var payload = JSON.stringify(req.body);
   console.log(payload);
   res.status(200).send(payload);
-});
-
-app.get('/api/data', (req, res) => {
-  console.log(data);
-  res.status(200).send(data);
 });
 
 app.post('/api/data', (req, res) => {
@@ -75,16 +103,11 @@ app.post('/api/data/:controller', (req, res) => {
   console.log(`${ctrl}: ${payload}`);
   pusher.trigger('data', ctrl, payload); // payload must be sent as a string
 
-  var table;
-  switch(ctrl) {
-    case 'controller': table = 'Controller'; break;
-    case 'pdu'       : table = 'PduController'; break;
-    case 'motorsb'   : table = 'MotorSb'; break;
-    case 'motorbb'   : table = 'MotorBb'; break;
-  }
+  var table = getTableFromController(ctrl);
+	var sql = `INSERT INTO ${table} (${Object.keys(req.body)}) VALUES (?)`;
 
-  var sql = `INSERT INTO ${table} (${Object.keys(req.body)}) VALUES (?)`;
-  var values = Object.keys(req.body).map(function(_){return req.body[_];});
+	values = Object.keys(req.body).map(function(_){return req.body[_];});
+
 
   connection.query(sql, [values], function(err, result){
     if(err) console.log(err);
@@ -92,6 +115,11 @@ app.post('/api/data/:controller', (req, res) => {
 
   res.status(200).send(payload);
 });
+// ====================================== //
+
+
+
+
 
 // 404
 app.use(function(req, res, next){

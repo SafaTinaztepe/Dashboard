@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../stylesheets/DataBox.css";
 import "../stylesheets/MotorSb.css";
 
-class MotorBb extends Component{
+class MotorSb extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -13,17 +13,6 @@ class MotorBb extends Component{
       pump: props.pump
     }
   }
-  componentDidMount(){
-    this.setState({
-      rpm: this.props.rpm,
-      motor_temp: this.props.motor_temp,
-      coolant_temp: this.props.coolant_temp,
-      elock: this.props.elock,
-      pump: this.props.pump
-    });
-  }
-
-
 
   render(){
     return(
@@ -52,17 +41,17 @@ class MotorBb extends Component{
     	</tr>
     	<tr>
     	  <td>
-    	    {this.props.rpm}
+    	    {this.state.rpm}
     	  </td>
     	  <td>
-      	    {this.props.motor_temp}
+      	    {this.state.motor_temp}
     	  </td>
     	  <td>
-    	    {this.props.coolant_temp}
+    	    {this.state.coolant_temp}
     	  </td>
-    	  <td className={this.props.elock}>
+    	  <td className={this.state.elock}>
     	  </td>
-    	  <td className={this.props.pump}>
+    	  <td className={this.state.pump}>
     	  </td>
     	</tr>
     	</tbody>
@@ -82,4 +71,4 @@ class MotorBb extends Component{
   }
 }
 
-export default MotorBb;
+export default MotorSb;
