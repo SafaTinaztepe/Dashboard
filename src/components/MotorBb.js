@@ -61,13 +61,13 @@ class MotorSb extends Component{
       <tr>
         <td className="motor_tablecell motor_label">
           <span>
-    	Backboard Motor
+    	     Backboard Motor
           </span>
         </td>
       </tr>
       </tbody>
     </table>
-    )	
+    )
   }
 }
 
