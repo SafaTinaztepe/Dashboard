@@ -3,6 +3,9 @@
 # sftp config
 .ftpconfig
 
+# service
+humphry-dashboard-server.service
+
 
 # dependencies
 /node_modules
