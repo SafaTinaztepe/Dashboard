@@ -13,7 +13,8 @@ class Controller extends Component{
         knob_bb_fw: props.knob_bb_fw,
         knob_sb_bw: props.knob_sb_bw,
         knob_bb_bw: props.knob_bb_bw,
-        slideInputHandler : props.slideInputHandler
+        slideInputHandler : props.slideInputHandler,
+        textInputHandler  : props.textInputHandler
       };
     }
 
@@ -34,10 +35,10 @@ class Controller extends Component{
             </tr>
             <tr>
               <td colSpan='2'>
-	               <canvas id='knob_sb' style={{marginLeft:0}} width={200}></canvas>
+	               <canvas id='knob_sb_chart' style={{marginLeft:0}} width={200}></canvas>
               </td>
               <td colSpan='2'>
-                <canvas id='knob_bb' style={{marginLeft:0}} width={200}></canvas>
+                <canvas id='knob_bb_chart' style={{marginLeft:0}} width={200}></canvas>
               </td>
       	    </tr>
       	    <tr>
@@ -63,14 +64,14 @@ class Controller extends Component{
           </tr>
           <tr>
             <td className="tableCell slidecontainer" colSpan='4'>
-              KnobBb: <span id='knob_bb_target'>0</span>
-              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_bb'/>
+              KnobSb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_sb_target' defaultValue={0}/>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_sb'/>
             </td>
           </tr>
           <tr>
             <td className="tableCell slidecontainer" colSpan='4'>
-              KnobSb: <span id='knob_sb_target'>0</span>
-              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_sb'/>
+              KnobBb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_bb_target' defaultValue={0}/>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_bb'/>
             </td>
           </tr>
           </tbody>

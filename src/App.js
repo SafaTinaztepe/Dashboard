@@ -43,6 +43,7 @@ class App extends Component {
   componentDidMount() {
 
     this.drawChart = this.drawChart.bind(this);
+    this.textInputHandler = this.textInputHandler.bind(this);
     this.slideInputHandler = this.slideInputHandler.bind(this);
 
     var socket = this.state.socket;
@@ -53,13 +54,14 @@ class App extends Component {
 
     socket.on('controller', data => {
       data = JSON.parse(data);
-      this.setState({knob_sb    : data.knob_sb    || this.state.knob_sb,
-                     knob_bb    : data.knob_bb    || this.state.knob_bb,
-                     knob_sb_fw : data.knob_sb_fw || this.state.knob_sb_fw,
-                     knob_sb_bw : data.knob_sb_bw || this.state.knob_sb_bw,
-                     knob_bb_fw : data.knob_bb_fw || this.state.knob_bb_fw,
-                     knob_bb_bw : data.knob_bb_bw || this.state.knob_bb_bw,
-                     slideInputHandler : this.slideInputHandler.bind(this)});
+      this.setState({knob_sb    : data.knob_sb,
+                     knob_bb    : data.knob_bb,
+                     knob_sb_fw : data.knob_sb_fw,
+                     knob_sb_bw : data.knob_sb_bw,
+                     knob_bb_fw : data.knob_bb_fw,
+                     knob_bb_bw : data.knob_bb_bw,
+                     slideInputHandler : this.slideInputHandler.bind(this),
+                     textInputHandler  : this.textInputHandler.bind(this)});
 
 
       this.drawChart('knob_sb', this.state.knob_sb_fw, this.state.knob_sb);
@@ -98,8 +100,9 @@ class App extends Component {
 
   // local function for Controller component
   drawChart(component, sw, value){
-    var proportion = value/1024 * sw == '0' ? 1 : -1;
-    var c = document.querySelector(`#${component}`);
+    var proportion = value/1024;
+    proportion * sw=='1' ? 1 : -1;
+    var c = document.querySelector(`#${component}_chart`);
     var ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
     ctx.beginPath();
@@ -113,7 +116,7 @@ class App extends Component {
     // draw arced arrow
     ctx.beginPath();
     ctx.restore();
-    ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2, sw == '1');
+    ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2, sw==1);
     ctx.strokeStyle = '#205116';
     ctx.lineWidth = 5;
     ctx.stroke();
@@ -128,13 +131,39 @@ class App extends Component {
 
     ctx.closePath();
   }
+  // TODO: subtract common logic from handlers, maybe make a class
+  textInputHandler(e) {
+    if(e.keyCode === 13) {
+      var slider_target = e.target.id.substring(0,7);
+      var slider = document.querySelector(`input#${slider_target}`);
+      slider.value = e.target.value;
+      var sw = Boolean(e.target.value >= 0 ? 0 : 1);
+      var body;
+      if(slider.id === 'knob_sb'){
+        body = {knob_sb:e.target.value,knob_bb:this.state.knob_bb, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:Boolean(this.state.knob_bb_fw), knob_bb_bw:Boolean(this.state.knob_bb_bw)};
+      }
+      else if(slider.id === 'knob_bb'){
+        body = {knob_sb:this.state.knob_sb,knob_bb:e.target.value, knob_sb_fw:Boolean(this.state.knob_sb_fw), knob_sb_bw:Boolean(this.state.knob_sb_bw), knob_bb_fw:sw, knob_bb_bw:!sw};
+      }
+      var payload = JSON.stringify(body);
+      axios.post(this.state.endpoint+'api/data/controller', body);
+    }
+  }
+
 
   slideInputHandler(e){
     var slider = e.target;
-    var target = document.querySelector(`#${e.target.id}_target`);
-    target.innerHTML = slider.value;
-    var sw = slider.value >= 0 ? 0 : 1;
-    var body = {knob_sb:slider.value,knob_bb:this.state.knob_bb, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:this.state.knob_bb_fw, knob_bb_bw:this.state.knob_bb_bw};
+    var target = document.querySelector(`#${slider.id}_target`);
+    target.value = slider.value;
+    var sw = Boolean(slider.value >= 0 ? 0 : 1);
+    console.log(this.state.knob_sb_fw);
+    var body;
+    if(slider.id === 'knob_sb'){
+      body = {knob_sb:slider.value,knob_bb:this.state.knob_bb, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:Boolean(this.state.knob_bb_fw), knob_bb_bw:Boolean(this.state.knob_bb_bw)};
+    }
+    else if(slider.id === 'knob_bb'){
+      body = {knob_sb:this.state.knob_sb,knob_bb:slider.value, knob_sb_fw:Boolean(this.state.knob_sb_fw), knob_sb_bw:Boolean(this.state.knob_sb_bw), knob_bb_fw:sw, knob_bb_bw:!sw};
+    }
     var payload = JSON.stringify(body);
     axios.post(this.state.endpoint+'api/data/controller', body);
   }
@@ -156,6 +185,7 @@ class App extends Component {
             knob_bb_bw  = {this.state.knob_bb_bw == '1' ? 'on' : 'off'}
             drawChart   = {this.drawChart.bind(this)}
             slideInputHandler = {this.slideInputHandler.bind(this)}
+            textInputHandler = {this.textInputHandler.bind(this)}
 	   	    />
 	      </li>
 	      <li>

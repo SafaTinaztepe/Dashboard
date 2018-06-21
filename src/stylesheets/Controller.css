@@ -10,6 +10,11 @@ td.off {
 
 .slidecontainer {
     width: 100%;
+
+}
+
+input, textarea {
+  color: #000;
 }
 
 .slider {
