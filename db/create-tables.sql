@@ -7,10 +7,10 @@ CREATE TABLE Controller(
   ts TIMESTAMP NOT NULL,
   knob_sb INTEGER,
   knob_bb INTEGER,
-  knob_fw_sb INTEGER,
-  knob_bw_sb INTEGER,
-  knob_fw_bb INTEGER,
-  knob_bw_bb INTEGER,
+  knob_sb_fw INTEGER,
+  knob_sb_bw INTEGER,
+  knob_bb_fw INTEGER,
+  knob_bb_bw INTEGER,
   PRIMARY KEY (id, ts)
 );
 

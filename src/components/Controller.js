@@ -9,29 +9,15 @@ class Controller extends Component{
       this.state = {
         knob_sb: props.knob_sb,
         knob_bb: props.knob_bb,
-        knob_fw_sb: props.knob_fw_sb,
-        knob_fw_bb: props.knob_fw_bb,
-        knob_bw_sb: props.knob_bw_sb,
-        knob_bw_bb: props.knob_bw_bb
+        knob_sb_fw: props.knob_sb_fw,
+        knob_bb_fw: props.knob_bb_fw,
+        knob_sb_bw: props.knob_sb_bw,
+        knob_bb_bw: props.knob_bb_bw,
+        slideInputHandler : props.slideInputHandler
       };
-      /*setInterval(function(){
-        props.handleDbChange('controller');
-        props.drawChart('knob_sb', props.knob_fw_sb, props.knob_sb);
-        props.drawChart('knob_bb', props.knob_fw_bb, props.knob_bb);
-      }, 1000);*/
     }
 
     componentDidMount(){
-      this.setState({
-	      knob_sb: this.props.knob_sb,
-        knob_bb: this.props.knob_bb,
-        knob_fw_sb: this.props.knob_fw_sb,
-        knob_fw_bb: this.props.knob_fw_bb,
-        knob_bw_sb: this.props.knob_bw_sb,
-        knob_bw_bb: this.props.knob_bw_bb
-      });
-
-      // fetch changes every second
     }
 
     render(){
@@ -48,24 +34,24 @@ class Controller extends Component{
             </tr>
             <tr>
               <td colSpan='2'>
-	        <canvas id='knob_sb' style={{marginLeft:0}} width={200}></canvas>
+	               <canvas id='knob_sb' style={{marginLeft:0}} width={200}></canvas>
               </td>
               <td colSpan='2'>
                 <canvas id='knob_bb' style={{marginLeft:0}} width={200}></canvas>
               </td>
-	    </tr>
-	    <tr>
-              <td className={this.props.knob_fw_sb}>
-	        <div style={{height:25}}>Forward</div>
+      	    </tr>
+      	    <tr>
+              <td className={this.props.knob_sb_fw}>
+	              <div style={{height:25}}>Forward</div>
               </td>
-              <td className={this.props.knob_bw_sb}>
-	        <div style={{height:25}}>Backward</div>
+              <td className={this.props.knob_sb_bw}>
+	              <div style={{height:25}}>Backward</div>
               </td>
-              <td className={this.props.knob_fw_bb}>
-	        <div style={{height:25}}>Forward</div>
+              <td className={this.props.knob_bb_fw}>
+	              <div style={{height:25}}>Forward</div>
              </td>
-             <td className={this.props.knob_bw_bb}>
-	       <div style={{height:25}}>Backward</div>
+             <td className={this.props.knob_bb_bw}>
+	              <div style={{height:25}}>Backward</div>
              </td>
             </tr>
           <tr>
@@ -73,6 +59,18 @@ class Controller extends Component{
              <span>
                Controller
              </span>
+            </td>
+          </tr>
+          <tr>
+            <td className="tableCell slidecontainer" colSpan='4'>
+              KnobBb: <span id='knob_bb_target'>0</span>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_bb'/>
+            </td>
+          </tr>
+          <tr>
+            <td className="tableCell slidecontainer" colSpan='4'>
+              KnobSb: <span id='knob_sb_target'>0</span>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_sb'/>
             </td>
           </tr>
           </tbody>

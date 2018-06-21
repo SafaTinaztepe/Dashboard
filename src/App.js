@@ -5,19 +5,19 @@ import PduController from './components/PduController';
 import MotorSb from './components/MotorSb';
 import MotorBb from './components/MotorBb';
 import socketIOClient from 'socket.io-client';
-import './stylesheets/App.css';
+import './App.css';
 
 /*eslint-disable*/
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor(data) {
+    super(data);
     this.state = {
       knob_sb          : -1,
       knob_bb          : -1,
-      knob_fw_sb       : -1,
-      knob_fw_bb       : -1,
-      knob_bw_sb       : -1,
-      knob_bw_bb       : -1,
+      knob_sb_fw       : -1,
+      knob_bb_fw       : -1,
+      knob_sb_bw       : -1,
+      knob_bb_bw       : -1,
       current_sb       : -1,
       current_bb       : -1,
       v12_bus 	       : -1,
@@ -43,10 +43,9 @@ class App extends Component {
   componentDidMount() {
 
     this.drawChart = this.drawChart.bind(this);
+    this.slideInputHandler = this.slideInputHandler.bind(this);
 
-
-    var socket = socketIOClient(this.state.endpoint);
-    this.setState({'socket':socket});
+    var socket = this.state.socket;
 
     socket.on('echo', function(payload){
       console.log(payload);
@@ -54,15 +53,17 @@ class App extends Component {
 
     socket.on('controller', data => {
       data = JSON.parse(data);
-      this.setState({knob_sb	     : data.knob_sb,
-      	      	     knob_bb       : data.knob_bb,
-      	      	     knob_fw_sb    : data.knob_fw_sb,
-      	      	     knob_fw_bb	   : data.knob_fw_bb,
-      	             knob_bw_sb    : data.knob_bw_sb,
-      	             knob_bw_bb    : data.knob_bw_bb});
+      this.setState({knob_sb    : data.knob_sb    || this.state.knob_sb,
+                     knob_bb    : data.knob_bb    || this.state.knob_bb,
+                     knob_sb_fw : data.knob_sb_fw || this.state.knob_sb_fw,
+                     knob_sb_bw : data.knob_sb_bw || this.state.knob_sb_bw,
+                     knob_bb_fw : data.knob_bb_fw || this.state.knob_bb_fw,
+                     knob_bb_bw : data.knob_bb_bw || this.state.knob_bb_bw,
+                     slideInputHandler : this.slideInputHandler.bind(this)});
 
-      this.drawChart('knob_sb', this.state.knob_fw_sb, this.state.knob_sb);
-      this.drawChart('knob_bb', this.state.knob_fw_bb, this.state.knob_bb);
+
+      this.drawChart('knob_sb', this.state.knob_sb_fw, this.state.knob_sb);
+      this.drawChart('knob_bb', this.state.knob_bb_fw, this.state.knob_bb);
     });
 
     socket.on('pdu', data => {
@@ -70,25 +71,27 @@ class App extends Component {
       this.setState({current_sb    : data.current_sb,
               	     current_bb	   : data.current_bb,
               	     v12_bus 	     : data.v12_bus,
-              	     v12_battery   : data.v12_battery,
               	     v48_bus	     : data.v48_bus,
-              	     v48_dcdc      : data.v48_dcdc});
+              	     v48_dcdc      : data.v48_dcdc,
+                     v12_battery   : data.v12_battery});
     });
 
     socket.on('motorsb', data => {
+      data = JSON.parse(data);
       this.setState({rpm_sb           : data.rpm,
-               	     motor_temp_sb    : data.motor_temp,
-              	     coolant_temp_sb  : data.coolant_temp,
-               	     elock_sb         : data.elock,
-              	     pump_sb	        : data.pump});
+              	     pump_sb	        : data.pump,
+                     elock_sb         : data.elock,
+                     motor_temp_sb    : data.motor_temp,
+                     coolant_temp_sb  : data.coolant_temp});
     });
 
     socket.on('motorbb', data => {
+      data = JSON.parse(data);
       this.setState({rpm_bb           : data.rpm,
-               	     motor_temp_bb    : data.motor_temp,
-              	     coolant_temp_bb  : data.coolant_temp,
-               	     elock_bb         : data.elock,
-              	     pump_bb          : data.pump})
+              	     pump_bb          : data.pump,
+                     elock_bb         : data.elock,
+                     motor_temp_bb    : data.motor_temp,
+                     coolant_temp_bb  : data.coolant_temp});
     });
 
   }
@@ -100,7 +103,7 @@ class App extends Component {
     var ctx = c.getContext("2d");
     ctx.clearRect(0,0,c.width,c.height);
     ctx.beginPath();
-
+    ctx.save()
     ctx.arc(100, 75, 50, 0, 2*Math.PI);
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 1;
@@ -109,6 +112,7 @@ class App extends Component {
 
     // draw arced arrow
     ctx.beginPath();
+    ctx.restore();
     ctx.arc(100, 75, 50, -Math.PI/2,  proportion*2*Math.PI - Math.PI/2, sw == '1');
     ctx.strokeStyle = '#205116';
     ctx.lineWidth = 5;
@@ -125,6 +129,17 @@ class App extends Component {
     ctx.closePath();
   }
 
+  slideInputHandler(e){
+    var slider = e.target;
+    var target = document.querySelector(`#${e.target.id}_target`);
+    target.innerHTML = slider.value;
+    var sw = slider.value >= 0 ? 0 : 1;
+    var body = {knob_sb:slider.value,knob_bb:549, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:0, knob_bb_bw:1};
+    var payload = JSON.stringify(body);
+    axios.post(this.state.endpoint+'api/data/controller', body);
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -135,39 +150,40 @@ class App extends Component {
 	        <Controller
   	    	  knob_sb     = {this.state.knob_sb}
   	    	  knob_bb     = {this.state.knob_bb}
-  	    	  knob_fw_sb  = {this.state.knob_fw_sb == '1' ? 'on' : 'off'}
-            knob_fw_bb  = {this.state.knob_fw_bb == '1' ? 'on' : 'off'}
-            knob_bw_sb  = {this.state.knob_bw_sb == '1' ? 'on' : 'off'}
-            knob_bw_bb  = {this.state.knob_bw_bb == '1' ? 'on' : 'off'}
+  	    	  knob_sb_fw  = {this.state.knob_sb_fw == '1' ? 'on' : 'off'}
+            knob_bb_fw  = {this.state.knob_bb_fw == '1' ? 'on' : 'off'}
+            knob_sb_bw  = {this.state.knob_sb_bw == '1' ? 'on' : 'off'}
+            knob_bb_bw  = {this.state.knob_bb_bw == '1' ? 'on' : 'off'}
             drawChart   = {this.drawChart.bind(this)}
+            slideInputHandler = {this.slideInputHandler.bind(this)}
 	   	    />
 	      </li>
 	      <li>
 	        <PduController
-	          current_sb  = {this.state.current_sb}
-	          current_bb  = {this.state.current_bb}
 	          v12_bus     = {this.state.v12_bus}
-	          v12_battery = {this.state.v12_battery}
 	          v48_bus     = {this.state.v48_bus}
 	          v48_dcdc    = {this.state.v48_dcdc}
+            current_sb  = {this.state.current_sb}
+            current_bb  = {this.state.current_bb}
+            v12_battery = {this.state.v12_battery}
 	        />
 	      </li>
 	      <li>
 	        <MotorSb
-  	        rpm={this.state.rpm_sb}
-  	     	  motor_temp={this.state.motor_temp_sb}
-  	    	  coolant_temp={this.state.coolant_temp_sb}
-  	    	  elock={this.state.elock_sb == '1' ? 'on' : 'off'}
-  	    	  pump={this.state.pump_sb == '1' ? 'on' : 'off'}
+  	        rpm          = {this.state.rpm_sb}
+  	    	  pump         = {this.state.pump_sb  == '1' ? 'on' : 'off'}
+            elock        = {this.state.elock_sb == '1' ? 'on' : 'off'}
+            motor_temp   = {this.state.motor_temp_sb}
+            coolant_temp = {this.state.coolant_temp_sb}
 	        />
 	      </li>
 	      <li>
           <MotorBb
-            rpm={this.state.rpm_bb}
-            motor_temp={this.state.motor_temp_bb}
-            coolant_temp={this.state.coolant_temp_bb}
-            elock={this.state.elock_bb == '1' ? 'on' : 'off'}
-            pump={this.state.pump_bb == '1' ? 'on' : 'off'}
+            rpm          = {this.state.rpm_bb}
+            pump         = {this.state.pump_bb  == '1' ? 'on' : 'off'}
+            elock        = {this.state.elock_bb == '1' ? 'on' : 'off'}
+            motor_temp   = {this.state.motor_temp_bb}
+            coolant_temp = {this.state.coolant_temp_bb}
           />
 	      </li>
         <button className={'btn btn-success'} onClick={()=>axios.post(this.state.endpoint+'api/echo', 'echo')}>Click me!</button>
