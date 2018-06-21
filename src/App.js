@@ -134,7 +134,7 @@ class App extends Component {
     var target = document.querySelector(`#${e.target.id}_target`);
     target.innerHTML = slider.value;
     var sw = slider.value >= 0 ? 0 : 1;
-    var body = {knob_sb:slider.value,knob_bb:549, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:0, knob_bb_bw:1};
+    var body = {knob_sb:slider.value,knob_bb:this.state.knob_bb, knob_sb_fw:sw, knob_sb_bw:!sw, knob_bb_fw:this.state.knob_bb_fw, knob_bb_bw:this.state.knob_bb_bw};
     var payload = JSON.stringify(body);
     axios.post(this.state.endpoint+'api/data/controller', body);
   }
