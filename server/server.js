@@ -4,20 +4,13 @@
 // ============== Imports =============== //
 const cors = require('cors');
 const http = require('http');
-const mysql = require('mysql');
+//const mysql = require('mysql');
 const express = require('express');
 const socketIO = require('socket.io');
 const bodyParser = require('body-parser');
 // ====================================== //
 
 // ============== Database ============== //
-var db = mysql.createConnection({
-	host	   : 'localhost',
-	user	   : 'web_client',
-  password : 'web_client',
-  database : 'motor'
-});
-db.connect();
 // ====================================== //
 
 
@@ -56,10 +49,10 @@ app.get('/api/echo', (req, res) => {
 app.get('/api/data/:controller', (req, res) => {
   var table = getTableFromController(req.params.controller);
   var sql = `SELECT * FROM ${table} ORDER BY id DESC LIMIT 1`;
-  db.query(sql, function(err, result){
+  /*db.query(sql, function(err, result){
     if(err) console.log(err);
-    res.status(200).send(result[0]);
-  });
+    res.status(200).send(result);
+  });*/
 });
 // ====================================== //
 
@@ -95,10 +88,6 @@ app.post('/api/data/:controller', (req, res) => {
 		values = Object.keys(req.body).map(function(_){return req.body[_]});
 	}
 
-  db.query(sql, [values], function(err, result){
-    if(err) console.log(err);
-  });
-
   res.status(200).send(req.body);
 });
 // ====================================== //
@@ -114,5 +103,5 @@ server.listen(app.get('PORT'), function(){
 
 process.on('exit', function() {
   console.log("About to exit");
-  db.end();
+  //db.end();
 });

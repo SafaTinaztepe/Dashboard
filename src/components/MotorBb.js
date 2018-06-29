@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../stylesheets/DataBox.css";
-import "../stylesheets/MotorSb.css";
+import "../stylesheets/MotorBb.css";
 
-class MotorSb extends Component{
+class MotorBb extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -12,6 +12,8 @@ class MotorSb extends Component{
       elock: props.elock,
       pump: props.pump
     }
+  }
+  componentDidUpdate(prevProps, prevState){
   }
 
   render(){
@@ -41,17 +43,17 @@ class MotorSb extends Component{
     	</tr>
     	<tr>
     	  <td>
-    	    {this.state.rpm}
+    	    {this.props.rpm}
     	  </td>
     	  <td>
-      	    {this.state.motor_temp}
+      	    {this.props.motor_temp}
     	  </td>
     	  <td>
-    	    {this.state.coolant_temp}
+    	    {this.props.coolant_temp}
     	  </td>
-    	  <td className={this.state.elock}>
+    	  <td className={this.props.elock}>
     	  </td>
-    	  <td className={this.state.pump}>
+    	  <td className={this.props.pump}>
     	  </td>
     	</tr>
     	</tbody>
@@ -71,4 +73,4 @@ class MotorSb extends Component{
   }
 }
 
-export default MotorSb;
+export default MotorBb;

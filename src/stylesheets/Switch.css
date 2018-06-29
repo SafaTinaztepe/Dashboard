@@ -1,0 +1,44 @@
+.switch_widget-body {
+  width:300px;
+  height:200px;
+  color:white;
+  background-color: rgb(29, 132, 70);
+  box-shadow: rgba(0,0,0,0,1) 0px 2px 5px 0px;
+  margin-top: 400px;
+}
+
+.switch_tablecell {
+  background-color: rgb(94, 214, 141);
+  font-size: 20px;
+  margin-top:50px;
+  text-align:center;
+  height:20px;
+}
+
+.motor_content {
+  max-width:50px;
+  text-align:center;
+  margin:auto;
+}
+
+.switch_label {
+  color:#e0e3e5;
+  background-color:rgb(29, 132, 70);
+  font-size: 62.7px;
+  font-family: helvetica-neue;
+
+}
+
+div {
+  max-height:25px;
+}
+.on {
+  background-color:green;
+  text-align:center;
+  height:20px;
+}
+.off {
+  background-color:red;
+  text-align:center;
+  height:20px;
+}
