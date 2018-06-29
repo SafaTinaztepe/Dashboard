@@ -2,9 +2,9 @@
     background: -webkit-linear-gradient(#EB5757, #D59152);
     background: -o-linear-gradient(#EB5757, #D59152);
     background: -moz-linear-gradient(#EB5757, #D59152);
-    background: linear-gradient(#EB5757, #D59152);
+    background: linear-gradient(#EB5757, #D59152) fixed;
     min-height: 1000px;
-    height:100%;
+
 }
 
 .App-logo {

@@ -17,6 +17,7 @@ headers = {
 }
 
 
+
 def hit_ctrl():
     rng1 = random.randint(0,1025)
     rng2 = random.randint(0,1025)
@@ -30,7 +31,9 @@ def hit_ctrl():
     return time.time()-begin
 
 def hit_pdu():
-    pass
+    body = {"knob_sb":400,"knob_bb":549, "knob_sb_fw":0, "knob_sb_bw":0, "knob_bb_fw":0, "knob_bb_bw":1}
+    payload = str(body)
+
 
 times = []
 for _ in range(500):
