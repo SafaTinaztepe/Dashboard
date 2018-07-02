@@ -6,7 +6,6 @@ import MotorSb from "./components/MotorSb";
 import MotorBb from "./components/MotorBb";
 import Switch from "./components/Switch";
 import socketIOClient from "socket.io-client";
-import { Grid } from '@material-ui/core';
 import "./App.css";
 
 /*eslint-disable*/
@@ -48,16 +47,41 @@ class App extends Component {
       socket: socketIOClient("http://192.168.178.152:5000/")
     };
 
-    axios.get(this.state.endpoint + "api/data/controller").then(res => {
-      this.setState({
-        knob_sb: res.data.knob_sb,
-        knob_bb: res.data.knob_bb,
-        knob_sb_fw: res.data.knob_sb,
-        knob_sb_bw: res.data.knob_sb,
-        knob_bb_fw: res.data.knob_bb_fw,
-        knob_bb_bw: res.data.knob_bb_bw
+    var self = this;
+    axios.get(this.state.endpoint + "api/data/controller")
+    .then(function(res){
+      self.setState({
+        knob_sb: res.data[0].knob_sb,
+        knob_bb: res.data[0].knob_bb,
+        knob_sb_fw: res.data[0].knob_sb,
+        knob_sb_bw: res.data[0].knob_sb,
+        knob_bb_fw: res.data[0].knob_bb_fw,
+        knob_bb_bw: res.data[0].knob_bb_bw
       });
+
+      self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
+      self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
+    })
+    .catch(function (err){
+      throw(err);
     });
+
+    const endpoints = ['controller', 'pdu', 'motorsb', 'motorbb', 'switch'];
+    endpoints.map(function(ctrl) {
+      axios.get(self.state.endpoint + "api/data/" + ctrl)
+           .then(function(res){
+             var data_in = res.data[0]
+             Object.keys(data_in).map(function(key){
+               self.setState({key:data_in[key]});
+             });
+             self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
+             self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
+           })
+           .catch(function(err){
+             throw(err);
+           });
+    });
+
   }
 
   componentDidMount() {
@@ -66,9 +90,6 @@ class App extends Component {
     this.slideInputHandler = this.slideInputHandler.bind(this);
 
     var socket = this.state.socket;
-
-    this.drawChart("knob_sb", this.state.knob_sb_fw, this.state.knob_sb);
-    this.drawChart("knob_bb", this.state.knob_bb_fw, this.state.knob_bb);
 
     socket.on("echo", function(payload) {
       console.log(payload);
@@ -242,13 +263,14 @@ class App extends Component {
   }
 
 
-
   render() {
     return (
       <div className="App">
-        <section className="dataSection" padding-top={10}>
-          <Grid container>
-            <Grid item sm>
+        <section>
+          <table className="dataSection">
+          <tbody>
+            <tr>
+              <td>
               <Controller
                 knob_sb={this.state.knob_sb}
                 knob_bb={this.state.knob_bb}
@@ -260,9 +282,9 @@ class App extends Component {
                 slideInputHandler={this.slideInputHandler.bind(this)}
                 textInputHandler={this.textInputHandler.bind(this)}
               />
-            </Grid>
+              </td>
 
-            <Grid item sm>
+              <td>
               <PduController
                 v12_bus={this.state.v12_bus}
                 v48_bus={this.state.v48_bus}
@@ -271,8 +293,10 @@ class App extends Component {
                 current_bb={this.state.current_bb}
                 v12_battery={this.state.v12_battery}
               />
-            </Grid>
-            <Grid item sm>
+              </td>
+            </tr>
+            <tr>
+              <td className="gridrow">
               <MotorSb
                 rpm={this.state.rpm_sb}
                 pump={this.state.pump_sb == "1" ? "on" : "off"}
@@ -280,8 +304,8 @@ class App extends Component {
                 motor_temp={this.state.motor_temp_sb}
                 coolant_temp={this.state.coolant_temp_sb}
               />
-            </Grid>
-            <Grid item sm>
+              </td>
+              <td className="gridrow">
               <MotorBb
                 rpm={this.state.rpm_bb}
                 pump={this.state.pump_bb == "1" ? "on" : "off"}
@@ -289,9 +313,11 @@ class App extends Component {
                 motor_temp={this.state.motor_temp_bb}
                 coolant_temp={this.state.coolant_temp_bb}
               />
-            </Grid>
+              </td>
 
-            <Grid item sm>
+            </tr>
+            <tr>
+              <td className="gridrow">
               <Switch
                 battery={this.state.battery == "1" ? "on" : "off"}
                 fuel_cell={this.state.fuel_cell == "1" ? "on" : "off"}
@@ -302,8 +328,10 @@ class App extends Component {
                 sw7={this.state.sw7 == "1" ? "on" : "off"}
                 sw8={this.state.sw8 == "1" ? "on" : "off"}
               />
-            </Grid>
-          </Grid>
+            </td>
+          </tr>
+          </tbody>
+          </table>
         </section>
       </div>
     );

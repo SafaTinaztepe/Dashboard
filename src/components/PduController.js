@@ -15,11 +15,11 @@ class PduController extends Component{
       v48_dcdc: props.v48_dcdc
     }
   }
- 
+
   render(){
     return(
 <table className='pdu_widget-body'>
-  <tbody>
+  <tbody className='pdu_widget-body'>
   <tr>
     <td className="pdu_tablecell">
       <table border={1}>
