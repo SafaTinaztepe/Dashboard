@@ -6,7 +6,7 @@ import MotorSb from "./components/MotorSb";
 import MotorBb from "./components/MotorBb";
 import Switch from "./components/Switch";
 import socketIOClient from "socket.io-client";
-import { Grid, Row, Col } from "react-flexbox-grid";
+import { Grid } from '@material-ui/core';
 import "./App.css";
 
 /*eslint-disable*/
@@ -155,16 +155,24 @@ class App extends Component {
     ctx.stroke();
     ctx.closePath();
 
-    // draw arced arrow
     ctx.beginPath();
     ctx.restore();
     ctx.arc(
+<<<<<<< HEAD
       100,
       75,
       50,
       -Math.PI / 2,
       proportion * 2 * Math.PI - Math.PI / 2,
       sw == 1
+=======
+      100, // x
+      75, // y
+      50, // r
+      -Math.PI / 2, // start angle
+      proportion * 2 * Math.PI - Math.PI / 2, // end angle
+      sw == 1 // reversed?
+>>>>>>> ecd93a3834cc29115c9e101c50151054509d84bf
     );
     ctx.strokeStyle = "#205116";
     ctx.lineWidth = 5;
@@ -172,16 +180,15 @@ class App extends Component {
 
     ctx.font = "30px Georgia";
     ctx.fillStyle = "black";
-    ctx.fillText(value, 80, 75);
 
-    ctx.font = "15px Georgia";
-    ctx.fillStyle = "gray";
-    ctx.fillText("1024", 80, 100);
+    var txt = Math.round(100*(proportion),2)+'%';
+    var dim = ctx.measureText(txt);
 
+    ctx.fillText(txt, (c.width-dim.width)/2, (c.height/2)+7.5);
+    ctx.stroke();
     ctx.closePath();
   }
-  // TODO: subtract common logic from handlers, maybe make a class
-  // Separate into Handler Components
+
   textInputHandler(e) {
     if (e.keyCode === 13) {
       var slider_target = e.target.id.substring(0, 7);
@@ -219,7 +226,6 @@ class App extends Component {
     var target = document.querySelector(`#${slider.id}_target`);
     target.value = slider.value;
     var sw = Boolean(slider.value >= 0 ? 0 : 1);
-    console.log(this.state.knob_sb_fw);
     var body;
     if (slider.id === "knob_sb") {
       body = {
@@ -244,71 +250,68 @@ class App extends Component {
     axios.post(this.state.endpoint + "api/data/controller", body);
   }
 
+
+
   render() {
     return (
       <div className="App">
         <section className="dataSection" padding-top={10}>
-          <Grid fluid>
-            <Row>
-              <Col xs>
-                <Controller
-                  knob_sb={this.state.knob_sb}
-                  knob_bb={this.state.knob_bb}
-                  knob_sb_fw={this.state.knob_sb_fw == "1" ? "on" : "off"}
-                  knob_bb_fw={this.state.knob_bb_fw == "1" ? "on" : "off"}
-                  knob_sb_bw={this.state.knob_sb_bw == "1" ? "on" : "off"}
-                  knob_bb_bw={this.state.knob_bb_bw == "1" ? "on" : "off"}
-                  drawChart={this.drawChart.bind(this)}
-                  slideInputHandler={this.slideInputHandler.bind(this)}
-                  textInputHandler={this.textInputHandler.bind(this)}
-                />
-              </Col>
+          <Grid container>
+            <Grid item sm>
+              <Controller
+                knob_sb={this.state.knob_sb}
+                knob_bb={this.state.knob_bb}
+                knob_sb_fw={this.state.knob_sb_fw == "1" ? "on" : "off"}
+                knob_bb_fw={this.state.knob_bb_fw == "1" ? "on" : "off"}
+                knob_sb_bw={this.state.knob_sb_bw == "1" ? "on" : "off"}
+                knob_bb_bw={this.state.knob_bb_bw == "1" ? "on" : "off"}
+                drawChart={this.drawChart.bind(this)}
+                slideInputHandler={this.slideInputHandler.bind(this)}
+                textInputHandler={this.textInputHandler.bind(this)}
+              />
+            </Grid>
 
-              <Col xs>
-                <PduController
-                  v12_bus={this.state.v12_bus}
-                  v48_bus={this.state.v48_bus}
-                  v48_dcdc={this.state.v48_dcdc}
-                  current_sb={this.state.current_sb}
-                  current_bb={this.state.current_bb}
-                  v12_battery={this.state.v12_battery}
-                />
-              </Col>
-            </Row>
-            <Row style={{ paddingTop: "350px" }}>
-              <Col xs>
-                <MotorSb
-                  rpm={this.state.rpm_sb}
-                  pump={this.state.pump_sb == "1" ? "on" : "off"}
-                  elock={this.state.elock_sb == "1" ? "on" : "off"}
-                  motor_temp={this.state.motor_temp_sb}
-                  coolant_temp={this.state.coolant_temp_sb}
-                />
-              </Col>
-              <Col xs style={{ paddingLeft: "10px" }}>
-                <MotorBb
-                  rpm={this.state.rpm_bb}
-                  pump={this.state.pump_bb == "1" ? "on" : "off"}
-                  elock={this.state.elock_bb == "1" ? "on" : "off"}
-                  motor_temp={this.state.motor_temp_bb}
-                  coolant_temp={this.state.coolant_temp_bb}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs style={{ paddingTop: "350px" }}>
-                <Switch
-                  battery={this.state.battery == "1" ? "on" : "off"}
-                  fuel_cell={this.state.fuel_cell == "1" ? "on" : "off"}
-                  charger={this.state.charger == "1" ? "on" : "off"}
-                  sw4={this.state.sw4 == "1" ? "on" : "off"}
-                  sw5={this.state.sw5 == "1" ? "on" : "off"}
-                  sw6={this.state.sw6 == "1" ? "on" : "off"}
-                  sw7={this.state.sw7 == "1" ? "on" : "off"}
-                  sw8={this.state.sw8 == "1" ? "on" : "off"}
-                />
-              </Col>
-            </Row>
+            <Grid item sm>
+              <PduController
+                v12_bus={this.state.v12_bus}
+                v48_bus={this.state.v48_bus}
+                v48_dcdc={this.state.v48_dcdc}
+                current_sb={this.state.current_sb}
+                current_bb={this.state.current_bb}
+                v12_battery={this.state.v12_battery}
+              />
+            </Grid>
+            <Grid item sm>
+              <MotorSb
+                rpm={this.state.rpm_sb}
+                pump={this.state.pump_sb == "1" ? "on" : "off"}
+                elock={this.state.elock_sb == "1" ? "on" : "off"}
+                motor_temp={this.state.motor_temp_sb}
+                coolant_temp={this.state.coolant_temp_sb}
+              />
+            </Grid>
+            <Grid item sm>
+              <MotorBb
+                rpm={this.state.rpm_bb}
+                pump={this.state.pump_bb == "1" ? "on" : "off"}
+                elock={this.state.elock_bb == "1" ? "on" : "off"}
+                motor_temp={this.state.motor_temp_bb}
+                coolant_temp={this.state.coolant_temp_bb}
+              />
+            </Grid>
+
+            <Grid item sm>
+              <Switch
+                battery={this.state.battery == "1" ? "on" : "off"}
+                fuel_cell={this.state.fuel_cell == "1" ? "on" : "off"}
+                charger={this.state.charger == "1" ? "on" : "off"}
+                sw4={this.state.sw4 == "1" ? "on" : "off"}
+                sw5={this.state.sw5 == "1" ? "on" : "off"}
+                sw6={this.state.sw6 == "1" ? "on" : "off"}
+                sw7={this.state.sw7 == "1" ? "on" : "off"}
+                sw8={this.state.sw8 == "1" ? "on" : "off"}
+              />
+            </Grid>
           </Grid>
         </section>
       </div>

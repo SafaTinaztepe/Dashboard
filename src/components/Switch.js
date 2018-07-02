@@ -15,7 +15,6 @@ class Switch extends Component{
                    sw8    : props.sw8};
   }
   componentDidUpdate(prevProps,prevState){
-    console.log(this.props.battery);
   }
 
   render(){
