@@ -9,7 +9,6 @@ import socketIOClient from "socket.io-client";
 import { Grid } from '@material-ui/core';
 import "./App.css";
 
-const styles = {marginTop:1000};
 /*eslint-disable*/
 class App extends Component {
   constructor(data) {
