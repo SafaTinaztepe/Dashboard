@@ -50,6 +50,7 @@ class App extends Component {
     var self = this;
     axios.get(this.state.endpoint + "api/data/controller")
     .then(function(res){
+
       self.setState({
         knob_sb: res.data[0].knob_sb,
         knob_bb: res.data[0].knob_bb,
@@ -58,13 +59,14 @@ class App extends Component {
         knob_bb_fw: res.data[0].knob_bb_fw,
         knob_bb_bw: res.data[0].knob_bb_bw
       });
-
       self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
       self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
-    })
+
+      })
     .catch(function (err){
       throw(err);
     });
+
 
     const endpoints = ['controller', 'pdu', 'motorsb', 'motorbb', 'switch'];
     endpoints.map(function(ctrl) {
