@@ -13,7 +13,6 @@
     "mysql": "^2.15.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-flexbox-grid": "^2.1.2",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {

@@ -1,9 +1,12 @@
 .pdu_widget-body {
-  width:300px;
+  width:409px;
   height:200px;
   color:white;
   background-color: rgb(128, 175, 252);
   box-shadow: rgba(0,0,0,0,1) 0px 2px 5px 0px;
+  position:relative;
+  display:inline-block;
+  float:left;
 }
 
 .pdu_tablecell {

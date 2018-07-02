@@ -47,3 +47,17 @@ CREATE TABLE MotorBb(
   pump BOOLEAN,
   PRIMARY KEY (id, ts)
 );
+
+CREATE TABLE Switch(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  ts TIMESTAMP NOT NULL,
+  battery BOOLEAN,
+  fuel_cell BOOLEAN,
+  charger BOOLEAN,
+  sw4 BOOLEAN,
+  sw5 BOOLEAN,
+  sw6 BOOLEAN,
+  sw7 BOOLEAN,
+  sw8 BOOLEAN,
+  PRIMARY KEY (id, ts)
+);

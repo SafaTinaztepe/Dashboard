@@ -61,7 +61,7 @@ class MotorSb extends Component{
       <tr>
         <td className="motor_tablecell motor_label">
           <span>
-    	     Starboard Motor
+    	     Motor SB
           </span>
         </td>
       </tr>
