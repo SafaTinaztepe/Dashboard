@@ -4,7 +4,6 @@
     background: -moz-linear-gradient(#EB5757, #D59152);
     background: linear-gradient(#EB5757, #D59152) fixed;
     min-height: 1000px;
-
 }
 
 .App-logo {
@@ -28,7 +27,6 @@
   font-size: large;
 }
 
-
 section ul {
   padding: 10px;
 }
@@ -42,16 +40,16 @@ section li {
 .dataSection {
   display: inline-block;
   margin-left: -500px;
-  margin-top: -450px;
+  margin-top: 50px;
   top:50%;
   left:50%;
-  position:fixed;
+  position:relative;
 }
 
 .gridrow {
   padding-top:50px;
 }
 
- .gridrow:nth-child(even) {
+.col2 {
   padding-left:100px;
 }

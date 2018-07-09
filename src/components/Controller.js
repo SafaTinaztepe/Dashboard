@@ -7,18 +7,30 @@ class Controller extends Component{
     constructor(props){
       super(props);
       this.state = {
-        knob_sb: props.knob_sb,
-        knob_bb: props.knob_bb,
-        knob_sb_fw: props.knob_sb_fw,
-        knob_bb_fw: props.knob_bb_fw,
-        knob_sb_bw: props.knob_sb_bw,
-        knob_bb_bw: props.knob_bb_bw,
-        slideInputHandler : props.slideInputHandler,
-        textInputHandler  : props.textInputHandler
+        knob_sb: this.props.knob_sb,
+        knob_bb: this.props.knob_bb,
+        knob_sb_fw: this.props.knob_sb_fw,
+        knob_bb_fw: this.props.knob_bb_fw,
+        knob_sb_bw: this.props.knob_sb_bw,
+        knob_bb_bw: this.props.knob_bb_bw,
+        slideInputHandler : this.props.slideInputHandler,
+        textInputHandler  : this.props.textInputHandler
       };
     }
 
-    componentDidMount(){
+    componentDidUpdate(prevProps, prevState){
+      if(prevProps !== this.props){
+        this.setState({
+          knob_sb: this.props.knob_sb,
+          knob_bb: this.props.knob_bb,
+          knob_sb_fw: this.props.knob_sb_fw,
+          knob_bb_fw: this.props.knob_bb_fw,
+          knob_sb_bw: this.props.knob_sb_bw,
+          knob_bb_bw: this.props.knob_bb_bw,
+          slideInputHandler : this.props.slideInputHandler,
+          textInputHandler  : this.props.textInputHandler
+        });
+      }
     }
 
     render(){

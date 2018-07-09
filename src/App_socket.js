@@ -8,6 +8,8 @@ import Switch from "./components/Switch";
 import socketIOClient from "socket.io-client";
 import "./App.css";
 
+var W3CWebSocket = require("websocket").w3cwebsocket;
+
 /*eslint-disable*/
 class App extends Component {
   constructor(data) {
@@ -43,15 +45,14 @@ class App extends Component {
       sw6: -1,
       sw7: -1,
       sw8: -1,
-      endpoint: "http://192.168.178.152:5000/",
-      socket: socketIOClient("http://192.168.178.152:5000/")
+      endpoint: 'localhost:4350/'
     };
 
+
+    // Get last controller value
     var self = this;
-    axios.get(this.state.endpoint + "api/data/controller")
+    axios.get("http://" + this.state.endpoint + "api/data/controller")
     .then(function(res){
-      //console.log(res);
-      /*
       self.setState({
         knob_sb: res.data[0].knob_sb,
         knob_bb: res.data[0].knob_bb,
@@ -59,30 +60,13 @@ class App extends Component {
         knob_sb_bw: res.data[0].knob_sb,
         knob_bb_fw: res.data[0].knob_bb_fw,
         knob_bb_bw: res.data[0].knob_bb_bw
-      });*/
-
+      });
       self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
       self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
-    })
+
+      })
     .catch(function (err){
       throw(err);
-    });
-
-    const endpoints = ['controller', 'pdu', 'motorsb', 'motorbb', 'switch'];
-    endpoints.map(function(ctrl) {
-      axios.get(self.state.endpoint + "api/data/" + ctrl)
-           .then(function(res){
-             var data_in = res.data[0]
-             Object.keys(data_in).map(function(key){
-               self.setState({key:data_in[key]}, ()=>console.log());
-
-             });
-             self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
-             self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
-           })
-           .catch(function(err){
-             throw(err);
-           });
     });
 
   }
@@ -91,77 +75,81 @@ class App extends Component {
     this.drawChart = this.drawChart.bind(this);
     this.textInputHandler = this.textInputHandler.bind(this);
     this.slideInputHandler = this.slideInputHandler.bind(this);
+    document.title = "Humphry Dashboard";
 
-    var socket = this.state.socket;
+    var wsclient = new W3CWebSocket('ws://' + this.state.endpoint);
 
-    socket.on("echo", function(payload) {
-      console.log(payload);
-    });
-
-    socket.on("controller", data => {
-      data = JSON.parse(data);
-      this.setState({
-        knob_sb: data.knob_sb,
-        knob_bb: data.knob_bb,
-        knob_sb_fw: data.knob_sb_fw,
-        knob_sb_bw: data.knob_sb_bw,
-        knob_bb_fw: data.knob_bb_fw,
-        knob_bb_bw: data.knob_bb_bw,
-        slideInputHandler: this.slideInputHandler.bind(this),
-        textInputHandler: this.textInputHandler.bind(this)
+    wsclient.onopen = function(io){
+      io.on("echo", function(payload) {
+        console.log(payload);
       });
 
-      this.drawChart("knob_sb", this.state.knob_sb_fw, this.state.knob_sb);
-      this.drawChart("knob_bb", this.state.knob_bb_fw, this.state.knob_bb);
-    });
+      io.on("controller", data => {
+        data = JSON.parse(data);
+        this.setState({
+          knob_sb: data.knob_sb,
+          knob_bb: data.knob_bb,
+          knob_sb_fw: data.knob_sb_fw,
+          knob_sb_bw: data.knob_sb_bw,
+          knob_bb_fw: data.knob_bb_fw,
+          knob_bb_bw: data.knob_bb_bw,
+          slideInputHandler: this.slideInputHandler.bind(this),
+          textInputHandler: this.textInputHandler.bind(this)
+        });
 
-    socket.on("pdu", data => {
-      data = JSON.parse(data);
-      this.setState({
-        current_sb: data.current_sb,
-        current_bb: data.current_bb,
-        v12_bus: data.v12_bus,
-        v48_bus: data.v48_bus,
-        v48_dcdc: data.v48_dcdc,
-        v12_battery: data.v12_battery
+        this.drawChart("knob_sb", this.state.knob_sb_fw, this.state.knob_sb);
+        this.drawChart("knob_bb", this.state.knob_bb_fw, this.state.knob_bb);
       });
-    });
 
-    socket.on("motorsb", data => {
-      data = JSON.parse(data);
-      this.setState({
-        rpm_sb: data.rpm,
-        pump_sb: data.pump,
-        elock_sb: data.elock,
-        motor_temp_sb: data.motor_temp,
-        coolant_temp_sb: data.coolant_temp
+      io.on("pdu", data => {
+        data = JSON.parse(data);
+        this.setState({
+          current_sb: data.current_sb,
+          current_bb: data.current_bb,
+          v12_bus: data.v12_bus,
+          v48_bus: data.v48_bus,
+          v48_dcdc: data.v48_dcdc,
+          v12_battery: data.v12_battery
+        });
       });
-    });
 
-    socket.on("motorbb", data => {
-      data = JSON.parse(data);
-      this.setState({
-        rpm_bb: data.rpm,
-        pump_bb: data.pump,
-        elock_bb: data.elock,
-        motor_temp_bb: data.motor_temp,
-        coolant_temp_bb: data.coolant_temp
+      io.on("motorsb", data => {
+        data = JSON.parse(data);
+        this.setState({
+          rpm_sb: data.rpm,
+          pump_sb: data.pump,
+          elock_sb: data.elock,
+          motor_temp_sb: data.motor_temp,
+          coolant_temp_sb: data.coolant_temp
+        });
       });
-    });
 
-    socket.on("switch", data => {
-      data = JSON.parse(data);
-      this.setState({
-        battery: data.battery,
-        fuel_cell: data.fuel_cell,
-        charger: data.charger,
-        sw4: data.sw4,
-        sw5: data.sw5,
-        sw6: data.sw6,
-        sw7: data.sw7,
-        sw8: data.sw8
+      io.on("motorbb", data => {
+        data = JSON.parse(data);
+        this.setState({
+          rpm_bb: data.rpm,
+          pump_bb: data.pump,
+          elock_bb: data.elock,
+          motor_temp_bb: data.motor_temp,
+          coolant_temp_bb: data.coolant_temp
+        });
       });
-    });
+
+      io.on("switch", data => {
+        data = JSON.parse(data);
+        this.setState({
+          battery: data.battery,
+          fuel_cell: data.fuel_cell,
+          charger: data.charger,
+          sw4: data.sw4,
+          sw5: data.sw5,
+          sw6: data.sw6,
+          sw7: data.sw7,
+          sw8: data.sw8
+        });
+      });
+    };
+
   }
 
   // local function for Controller component
@@ -232,7 +220,7 @@ class App extends Component {
         };
       }
       var payload = JSON.stringify(body);
-      axios.post(this.state.endpoint + "api/data/controller", body);
+      axios.post('http://' + this.state.endpoint + "api/data/controller", body);
     }
   }
 
@@ -262,7 +250,7 @@ class App extends Component {
       };
     }
     var payload = JSON.stringify(body);
-    axios.post(this.state.endpoint + "api/data/controller", body);
+    axios.post('http://' + this.state.endpoint + "api/data/controller", body);
   }
 
 
@@ -287,7 +275,7 @@ class App extends Component {
               />
               </td>
 
-              <td>
+              <td className="col2">
               <PduController
                 v12_bus={this.state.v12_bus}
                 v48_bus={this.state.v48_bus}
@@ -298,7 +286,7 @@ class App extends Component {
               />
               </td>
             </tr>
-            <tr>
+            <tr className="gridrow">
               <td className="gridrow">
               <MotorSb
                 rpm={this.state.rpm_sb}
@@ -308,7 +296,7 @@ class App extends Component {
                 coolant_temp={this.state.coolant_temp_sb}
               />
               </td>
-              <td className="gridrow">
+              <td style={{paddingLeft:100+'px'}} className="gridrow col2">
               <MotorBb
                 rpm={this.state.rpm_bb}
                 pump={this.state.pump_bb == "1" ? "on" : "off"}

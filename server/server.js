@@ -74,11 +74,12 @@ app.post('/api/echo', (req, res) => {
 });
 
 app.post('/api/data/:controller', (req, res) => {
+  var sql;
+  var payload;
+  var values = [];
   var ctrl = req.params.controller;
   var table = getTableFromController(ctrl);
-	var sql;
-	var payload;
-	var values = [];
+
 	if(req.body instanceof Array){
 		req.body.map(row => {
 			payload = JSON.stringify(row);
