@@ -117,3 +117,7 @@ process.on('exit', function() {
   console.log("About to exit");
   db.end();
 });
+
+process.on('uncaughtException', function(err){
+  console.log('Caught exception: ', err);
+});

@@ -13,10 +13,12 @@
     "mysql": "^2.15.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-websocket": "^2.0.0",
     "socket.io": "^2.1.1",
     "sockjs": "^0.3.19",
     "sockjs-client": "^1.1.5",
-    "stomp": "^0.1.1"
+    "stomp": "^0.1.1",
+    "websockets": "^0.2.0"
   },
   "devDependencies": {
     "react-scripts": "^1.1.4"

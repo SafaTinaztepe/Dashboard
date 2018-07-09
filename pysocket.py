@@ -2,9 +2,9 @@
 import asyncio
 import websockets
 
-async def hit_endpoints(uri):
+async def hit_endpoints(uri,i):
     async with websockets.connect(uri) as websocket:
-        await websocket.send("{\"controller\":{\"knob_sb\":512,\"knob_bb\":512, \"knob_sb_fw\":0, \"knob_sb_bw\":1, \"knob_bb_fw\":0, \"knob_bb_bw\":1}}")
+        await websocket.send("{\"controller\":{\"knob_sb\":%i,\"knob_bb\":512, \"knob_sb_fw\":0, \"knob_sb_bw\":1, \"knob_bb_fw\":0, \"knob_bb_bw\":1}}" % i)
         res = await websocket.recv()
         print(res)
 
@@ -12,5 +12,7 @@ async def hit_endpoints(uri):
         res = await websocket.recv()
         print(res)
 
-asyncio.get_event_loop().run_until_complete(
-    hit_endpoints('ws://localhost:5001'))
+for i in range(1024):
+    asyncio.get_event_loop().run_until_complete(
+        hit_endpoints('ws://localhost:5001',i)
+        )

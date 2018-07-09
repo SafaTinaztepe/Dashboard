@@ -7,7 +7,7 @@ import MotorBb from "./components/MotorBb";
 import Switch from "./components/Switch";
 import socketIOClient from "socket.io-client";
 import "./App.css";
-
+var websockets = require('websockets');
 
 /*eslint-disable*/
 class App extends Component {
@@ -45,7 +45,7 @@ class App extends Component {
       sw7: -1,
       sw8: -1,
       endpoint: "http://192.168.178.152:5000/",
-      socket: socketIOClient("http://192.168.178.152:5000/")
+      socket: socketIOClient("http://192.168.178.152:5001/")
     };
 
     var self = this;
@@ -62,10 +62,6 @@ class App extends Component {
         knob_bb_bw: res.data[0].knob_bb_bw
       });
 
-      document.querySelector(`#knob_sb_input`).value = self.state.knob_sb;
-      document.querySelector(`#knob_bb_input`).value = self.state.knob_bb;
-      document.querySelector(`#knob_sb_slider`).value = self.state.knob_sb;
-      document.querySelector(`#knob_bb_slider`).value = self.state.knob_bb;
       self.drawChart("knob_sb", self.state.knob_sb_fw, self.state.knob_sb);
       self.drawChart("knob_bb", self.state.knob_bb_fw, self.state.knob_bb);
     })
@@ -124,7 +120,11 @@ class App extends Component {
       this.drawChart("knob_sb", this.state.knob_sb_fw, this.state.knob_sb);
       this.drawChart("knob_bb", this.state.knob_bb_fw, this.state.knob_bb);
     });
-
+    var socket = new websockets.WebSocket('wss://localhost:5001');
+    socket.on('connection', function(){
+      console.log('echo');
+    });
+    /*
     socket.on("pdu", data => {
       data = JSON.parse(data);
       this.setState({
@@ -172,6 +172,7 @@ class App extends Component {
         sw8: data.sw8
       });
     });
+    */
   }
 
   // local function for Controller component

@@ -76,14 +76,14 @@ class Controller extends Component{
           </tr>
           <tr>
             <td className="tableCell slidecontainer" colSpan='4'>
-              KnobSb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_sb_target' defaultValue={0}/>
-              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_sb'/>
+              KnobSb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_sb_input' name='knob_sb' defaultValue={0}/>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" name='knob_sb' id='knob_sb_slider'/>
             </td>
           </tr>
           <tr>
             <td className="tableCell slidecontainer" colSpan='4'>
-              KnobBb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_bb_target' defaultValue={0}/>
-              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" id='knob_bb'/>
+              KnobBb: <input onKeyDown={this.props.textInputHandler} type='text' size={4} maxLength={4} id='knob_bb_input' name='knob_bb' defaultValue={0}/>
+              <input onChange={this.props.slideInputHandler} type="range" min="-1024" max="1024" defaultValue={0} className="slider" name='knob_bb' id='knob_bb_slider'/>
             </td>
           </tr>
           </tbody>
