@@ -11,9 +11,11 @@ wss.on('connection', function connection(ws) {
     var data = JSON.parse(data)
     var controller = Object.keys(data)[0];
     var payload = data[controller];
-    console.table(data);
-    ws.send("recieved");
     axios.post(`http://localhost:5000/api/data/${controller}`, payload);
+  });
+
+  ws.on('error', function err(e) {
+    console.log(e);
   });
 
 });
