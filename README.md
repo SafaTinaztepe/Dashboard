@@ -91,13 +91,13 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     <tr>
     <th>rpm</th>
     <td>Unsigned integer</td>
-    <td>![Any positive Integer](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;)</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'</td>
     <td>Rotations per minute of backboard motor</td>
     </tr>
     <tr>
     <th>motor_temp</th>
     <td>unsigned integer</td>
-    <td>![Any positive Integer](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;)</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'</td>
     <td>Percentage of the backboard throttle</td>
     </tr>
 	<tr>
