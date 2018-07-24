@@ -56,26 +56,26 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     </tr>
 	<tr>
     <th>knob_sb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
+    <td>Boolean</td>
+    <td>{0,1}</td>
     <td>Forward state of starboard motor</td>
     </tr>
    	<tr>
     <th>knob_sb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
+    <td>Boolean</td>
+    <td>{0,1}</td>
     <td>Forward state of starboard motor</td>
     </tr>
     <tr>
     <th>knob_bb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
+    <td>Boolean</td>
+    <td>{0,1}</td>
     <td>Forward state of starboard motor</td>
     </tr>
    	<tr>
     <th>knob_bb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
+    <td>Boolean</td>
+    <td>{0,1}</td>
     <td>Forward state of starboard motor</td>
     </tr>
     </table>
@@ -84,96 +84,80 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     <td>Backboard motor</td>
     <td>/api/data/motorbb</td>
     <td>
-        <table>
+    <table>
     <tr>
     <th>Name</th><th>Type</th><th>Values</th><th>Description</th>
     </tr>
     <tr>
     <th>rpm</th>
     <td>Unsigned integer</td>
-    <td>Any unsigned integer</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
     <td>Rotations per minute of backboard motor</td>
     </tr>
     <tr>
     <th>motor_temp</th>
-    <td>unsigned integer</td>
-    <td>Any unsigned integer</td>
-    <td>Percentage of the backboard throttle</td>
+    <td>Unsigned integer</td>
+	<td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Temperature of the backboard motor</td>
     </tr>
 	<tr>
-    <th>knob_sb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>coolant_temp</th>
+    <td>Unsigned integer</td>
+	<td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Temperature of the backboard coolant</td>
     </tr>
    	<tr>
-    <th>knob_sb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>elock</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of elock</td>
     </tr>
     <tr>
-    <th>knob_bb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
-    </tr>
-   	<tr>
-    <th>knob_bb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>pump</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of pump</td>
     </tr>
     </table>
     </td>
     </tr>
     <tr>
-	<td>
-    Starboard Motor
-    </td>
+    <td>Starboard motor</td>
+    <td>/api/data/motorbb</td>
     <td>
-    /api/data/motorsb
-    </td>
-    <td>
-        <table>
+    <table>
     <tr>
     <th>Name</th><th>Type</th><th>Values</th><th>Description</th>
     </tr>
     <tr>
-    <th>knob_sb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the starboard throttle</td>
+    <th>rpm</th>
+    <td>Unsigned integer</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Rotations per minute of backboard motor</td>
     </tr>
     <tr>
-    <th>knob_bb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the backboard throttle</td>
+    <th>motor_temp</th>
+    <td>Unsigned integer</td>
+	<td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Temperature of the backboard motor</td>
     </tr>
 	<tr>
-    <th>knob_sb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>coolant_temp</th>
+    <td>Unsigned integer</td>
+	<td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Temperature of the backboard coolant</td>
     </tr>
    	<tr>
-    <th>knob_sb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>elock</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of elock</td>
     </tr>
     <tr>
-    <th>knob_bb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
-    </tr>
-   	<tr>
-    <th>knob_bb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>pump</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of pump</td>
     </tr>
     </table>
     </td>
@@ -190,40 +174,40 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     <th>Name</th><th>Type</th><th>Values</th><th>Description</th>
     </tr>
     <tr>
-    <th>knob_sb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the starboard throttle</td>
+    <th>current_sb</th>
+    <td>Unsigned integer</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Current diverted to the starboard motor (mA)</td>
     </tr>
     <tr>
-    <th>knob_bb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the backboard throttle</td>
+    <th>current_bb</th>
+    <td>Unsigned integer</td>
+    <td><img src='https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;' alt='Any positive integer'></td>
+    <td>Current diverted to the backboard motor (mA)</td>
     </tr>
 	<tr>
-    <th>knob_sb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>v12_bus</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off Status of the 12 volt databus</td>
     </tr>
    	<tr>
-    <th>knob_sb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>v12_battery</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of the 12 volt battery</td>
     </tr>
     <tr>
-    <th>knob_bb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>v48_bus</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of the 48 volt databus</td>
     </tr>
    	<tr>
-    <th>knob_bb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>v48_dcdc</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off status of 48 volt DC-DC converter</td>
     </tr>
     </table>
     </td>
@@ -241,40 +225,52 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     <th>Name</th><th>Type</th><th>Values</th><th>Description</th>
     </tr>
     <tr>
-    <th>knob_sb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the starboard throttle</td>
+    <th>battery</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch</td>
     </tr>
     <tr>
-    <th>knob_bb</th>
-    <td>Signed integer</td>
-    <td>-1024...1024</td>
-    <td>Percentage of the backboard throttle</td>
+    <th>fuel_cell</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch</td>
     </tr>
 	<tr>
-    <th>knob_sb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>charger</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch</td>
     </tr>
    	<tr>
-    <th>knob_sb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>sw4</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch placeholder</td>
     </tr>
     <tr>
-    <th>knob_bb_fw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <th>sw5</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch placeholder</td>
     </tr>
-   	<tr>
-    <th>knob_bb_bw</th>
-    <td>bit</td>
-    <td>0 1</td>
-    <td>Forward state of starboard motor</td>
+    <tr>
+    <th>sw6</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch placeholder</td>
+    </tr>
+    <tr>
+    <th>sw7</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch placeholder</td>
+    </tr>
+    <tr>
+    <th>sw8</th>
+    <td>Boolean</td>
+    <td>{0,1}</td>
+    <td>On/Off switch placeholder</td>
     </tr>
     </table>
     </td>
@@ -312,3 +308,19 @@ To create a new component
         });
       });
     	```
+## Pushing changes
+Changes to the UI are not a problem, React will automatically render changes or throw an error page.
+
+Changes to the server (server/server.js) file, however, do <b>require you to restart the server</b>.
+
+#### Restarting the server
+----
+In this order and from any directory, type the commands:
+* `sudo systemctl disable humphry-dashboard-server`
+* `sudo systemctl disable humphry-dashboard-websockets`
+* `sudo systemctl daemon-reload`
+* `sudo systemctl enable humphry-dashboard-server`
+* `sudo systemctl enable humphry-dashboard-websockets`
+  * enabling the service should start the server again
+  * if not, then run `sudo systemctl start humphry-dashboard-server`
+  * `sudo systemctl start humphry-dashboard-websockets`
