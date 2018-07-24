@@ -91,13 +91,13 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     <tr>
     <th>rpm</th>
     <td>Unsigned integer</td>
-    <td>Any unsigned integer</td>
+    <td>![Any positive Integer](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;)</td>
     <td>Rotations per minute of backboard motor</td>
     </tr>
     <tr>
     <th>motor_temp</th>
     <td>unsigned integer</td>
-    <td>Any unsigned integer</td>
+    <td>![Any positive Integer](https://latex.codecogs.com/gif.latex?%5Cmathbb%7BZ%7D%5E&plus;)</td>
     <td>Percentage of the backboard throttle</td>
     </tr>
 	<tr>
@@ -135,7 +135,7 @@ Right now the backend supports a REST api and websocket connection.  The silly p
     /api/data/motorsb
     </td>
     <td>
-        <table>
+    <table>
     <tr>
     <th>Name</th><th>Type</th><th>Values</th><th>Description</th>
     </tr>
