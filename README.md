@@ -19,12 +19,16 @@ You should already have git and npm
 Right now the backend supports a REST api and websocket connection.  The silly part is that the websocket implementation is built on right top of the REST implementation.  Incoming ws messages just send a post request. You can attach either of these to a service file to run them on device.
 - Running REST server *required*
   - `node server/server.js`
+  - once the server is running, send requests to http://<address>:5000
 - Running websocket listener *optional*
+  - requires REST server to be running as well
   - `node server/sockets.js`
+  - once socket listener is running, send websocket messages to ws://<address>:5001
 
 ## Start Client Frontend
 - navigate to dashboard-gui and run `npm start`
   - `npm run build` for production
+- <b>to view the GUI, point your browser http://<address>:4350</b>
 
 
 ## API Reference
