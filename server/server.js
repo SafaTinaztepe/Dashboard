@@ -76,13 +76,14 @@ app.get('/api/data', (req, res) => {
   }
   html += '</table>';
   res.status(200).send(result);
-}
+});
 
 app.get('/api/data/:controller', (req, res) => {
   var table = getTableFromController(req.params.controller);
   var sql = `SELECT * FROM ${table} ORDER BY id DESC LIMIT 1`;
   db.query(sql, function(err, result){
     if(err) throw(err);
+    res.header('Access-Control-Allow-Origin', 'http://192.168.43.224:4350');
     res.status(200).send(result);
   });
 });

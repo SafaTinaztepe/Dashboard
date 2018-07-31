@@ -44,12 +44,12 @@ class App extends Component {
       sw6: -1,
       sw7: -1,
       sw8: -1,
-      endpoint: "http://192.168.178.152:5000/",
-      socket: socketIOClient("http://192.168.178.152:5000/")
+      endpoint: "http://192.168.43.224:5000/",
+      socket: socketIOClient("http://192.168.43.224:5000/")
     };
 
     var self = this;
-    axios.get(this.state.endpoint + "api/data/controller")
+    axios.get(this.state.endpoint + "api/data/controller", {headers:{'Accept':'application/json','Access-Control-Allow-Origin': 'http://192.168.43.224:4350'}})
     .then(function(res){
       //console.log(res);
 
