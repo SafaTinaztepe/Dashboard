@@ -53,6 +53,31 @@ app.get('/api/echo', (req, res) => {
   res.status(200).send('echo');
 });
 
+app.get('/api/data', (req, res) => {
+  var tables = ['Controller', 'PduController', 'MotorSb', 'MotorBb', 'Switch'];
+  var html = '';
+  for(var t in tables){
+    var sql = `SELECT * FROM ${table} ORDER BY id DESC`;
+    var data;
+    db.query(sql, function(err, result){
+      if(err) throw(err);
+      data = result;
+    });
+    var html = "<table border='1'";
+    for(var i=0; i<data.length; i++){
+      html += "<tr>";
+      for(var k in data[i]){
+        if (data[i].hasOwnProperty(key)) {
+          html += "<td>" + data[i][k] + "</td>";
+        }
+      }
+      html += "</tr>";
+    }
+  }
+  html += '</table>';
+  res.status(200).send(result);
+}
+
 app.get('/api/data/:controller', (req, res) => {
   var table = getTableFromController(req.params.controller);
   var sql = `SELECT * FROM ${table} ORDER BY id DESC LIMIT 1`;
