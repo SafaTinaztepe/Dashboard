@@ -106,8 +106,8 @@ class App extends Component {
     socket.on("controller", data => {
       data = JSON.parse(data);
       this.setState({
-        knob_sb: data.knob_sb,
-        knob_bb: data.knob_bb,
+        knob_sb: data.knob_sb-510,
+        knob_bb: data.knob_bb-510,
         knob_sb_fw: data.knob_sb_fw,
         knob_sb_bw: data.knob_sb_bw,
         knob_bb_fw: data.knob_bb_fw,

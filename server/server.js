@@ -56,14 +56,14 @@ app.get('/api/echo', (req, res) => {
 app.get('/api/data', (req, res) => {
   var tables = ['Controller', 'PduController', 'MotorSb', 'MotorBb', 'Switch'];
   var html = '';
-  for(var t of tables){
-    var sql = `SELECT * FROM ${t} ORDER BY id DESC`;
+  for(var t in tables){
+    var sql = `SELECT * FROM ${table} ORDER BY id DESC`;
     var data;
     db.query(sql, function(err, result){
       if(err) throw(err);
       data = result;
     });
-    html += "<table border='1'>";
+    var html = "<table border='1'";
     for(var i=0; i<data.length; i++){
       html += "<tr>";
       for(var k in data[i]){
@@ -75,7 +75,7 @@ app.get('/api/data', (req, res) => {
     }
   }
   html += '</table>';
-  res.status(200).send(html);
+  res.status(200).send(result);
 });
 
 app.get('/api/data/:controller', (req, res) => {
@@ -123,7 +123,7 @@ app.post('/api/data/:controller', (req, res) => {
 	}
 
   db.query(sql, [values], function(err,res, fields){
-    if(err) throw(err);
+    //if(err) throw(err);
   });
 
   res.status(200).send(req.body);
